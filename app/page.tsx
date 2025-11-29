@@ -1,8 +1,37 @@
+import {Flame} from "lucide-react";
+
+const data = [
+    {
+        id: 1,
+        city: "Debrecen",
+        country: "Hungary",
+        img: "https://edu.unideb.hu/tartalom/feltoltott_kepek/kepek/shutterstock_176965334.jpg"
+    },
+    {
+        id: 2,
+        city: "Pecs",
+        country: "Hungary",
+        img: "https://international.pte.hu/sites/international.pte.hu/files/share/INTERNATIONAL/university/P%C3%A9cs_k%C3%A9p_Kisfali_Gergely.jpg"
+    },
+    {
+        id: 3,
+        city: "Berea",
+        country: "USA",
+        img: "https://upload.wikimedia.org/wikipedia/commons/4/4c/Berea_Kentucky_City_Hall.jpg"
+    },
+    {
+        id: 4,
+        city: "Riyadh",
+        country: "Saudi Arabia",
+        img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsVpUb_7Urdno_LuRtJJ82lLneSxuwiZ1Tww&s"
+    }
+];
+
 export default function Home() {
     return (
         <div>
             <div
-                className={"relative h-[90vh] w-full bg-[url(/images/home-background.png)] bg-no-repeat bg-cover bg-center flex items-center justify-center"}>
+                className={"relative h-[91.4vh] w-full bg-[url(/images/home-background.png)] bg-no-repeat bg-cover bg-center flex items-center justify-center"}>
                 <div className="absolute inset-0 bg-black/40"></div>
                 <div className={"z-10 flex-col justify-center items-center"}>
                     <div className={"flex items-center justify-center mb-3"}>
@@ -21,6 +50,38 @@ export default function Home() {
                             Compare living costs, quality of life, and safety across the globe. Let <br/>
                             our AI guide you to your next perfect destination.
                         </p>
+                    </div>
+                    <div
+                        className="bg-white/20 backdrop-blur-lg border border-white/50 shadow-2xl rounded-2xl transition-all duration-300 p-6 mt-16">
+                        <div className={"flex items-center justify-between"}>
+                            <div className={"flex items-center justify-center gap-1"}>
+                                <Flame size={20} color={"#F97316"}/>
+                                <p className={"text-white text-base font-semibold"}>
+                                    Where people are looking now
+                                </p>
+                            </div>
+                            <p className={"text-sm font-light text-black/70"}>
+                                TRENDING
+                            </p>
+                        </div>
+                        <div className={"flex items-center justify-center gap-4 mt-5"}>
+                            {data.map((item) => (
+                                <div
+                                    style={{backgroundImage: `url(${item?.img})`}}
+                                    className="relative cursor-pointer bg-center bg-cover bg-no-repeat min-w-[200px] min-h-[150px] rounded-lg flex items-center justify-end flex-col overflow-hidden pb-2"
+                                    key={item.id}
+                                >
+                                    <div className="absolute inset-0 bg-black/40"></div>
+
+                                    <p className="text-white text-sm font-bold relative z-10">
+                                        {item?.city}
+                                    </p>
+                                    <p className="text-white text-xs font-extralight relative z-10">
+                                        {item?.country}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>

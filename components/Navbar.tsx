@@ -2,7 +2,28 @@ import Image from "next/image";
 import {Search, User} from "lucide-react";
 import Link from "next/link";
 
-const navItems = ["Home", "Countries", "Cities", "AI Center"];
+const navItems = [
+    {
+        id: 1,
+        name: "Home",
+        link: "/",
+    },
+    {
+        id: 2,
+        name: "Countries",
+        link: "/countries",
+    },
+    {
+        id: 3,
+        name: "Cities",
+        link: "/cities",
+    },
+    {
+        id: 4,
+        name: "AI Center",
+        link: "/ai-center",
+    }
+]
 
 export default function Navbar() {
     return (
@@ -11,7 +32,7 @@ export default function Navbar() {
             <div className="flex items-center gap-2">
                 <Link href={"/"}>
                     <Image
-                        src="/images/logo.png"
+                        src="/images/second-logo.jpg"
                         alt="logo"
                         width={40}
                         height={40}
@@ -24,16 +45,16 @@ export default function Navbar() {
             </div>
 
             {/* Navigation */}
-            <ul className="flex items-center gap-5 text-base text-gray-500 font-medium">
+            <div className="flex items-center gap-5 text-base text-gray-500 font-medium">
                 {navItems.map(item => (
-                    <li
-                        key={item}
-                        className="cursor-pointer transition-colors hover:text-blue-500"
+                    <Link href={item?.link}
+                          key={item.id}
+                          className="cursor-pointer transition-colors hover:text-blue-500"
                     >
-                        {item}
-                    </li>
+                        {item?.name}
+                    </Link>
                 ))}
-            </ul>
+            </div>
 
             {/* Actions */}
             <div className="flex items-center gap-5">
