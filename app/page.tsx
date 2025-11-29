@@ -1,4 +1,5 @@
-import {Flame} from "lucide-react";
+import {ArrowRight, Flame} from "lucide-react";
+import CityCard from "@/components/CityCard";
 
 const data = [
     {
@@ -26,6 +27,18 @@ const data = [
         img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsVpUb_7Urdno_LuRtJJ82lLneSxuwiZ1Tww&s"
     }
 ];
+
+const countries = [
+    {
+        id: 1,
+        img: "/images/paris.png",
+        name: "Paris",
+        rating: 4.5,
+        country: "France",
+        col: 3800,
+        safety: "High",
+    }
+]
 
 export default function Home() {
     return (
@@ -83,6 +96,24 @@ export default function Home() {
                             ))}
                         </div>
                     </div>
+                </div>
+            </div>
+            <div className={"px-24"}>
+                <h1 className={"text-[30px] font-bold text-black"}>
+                    Popular Destinations
+                </h1>
+                <div className={"flex items-center justify-between mb-7"}>
+                    <p className={"text-base font-normal text-[#6B7280]"}>
+                        Top rated cities by our community of digital nomads and expats.
+                    </p>
+                    <button className={"flex items-center justify-center text-[#3B82F6] gap-1"}>
+                        View all cities <ArrowRight size={18}/>
+                    </button>
+                </div>
+                <div>
+                    {countries.map(item => (
+                        <CityCard item={item} key={item.id}/>
+                    ))}
                 </div>
             </div>
         </div>
