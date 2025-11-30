@@ -15,7 +15,7 @@ const Footer = () => {
                             <div
                                 className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 shadow-sm"></div>
                             <span className="text-xl font-bold text-gray-900">
-                Live<span className="text-blue-500">Compare</span>
+                Global <span className="text-blue-500">Living</span>
               </span>
                         </Link>
                         <p className="text-gray-500 text-sm leading-relaxed max-w-[250px]">
@@ -73,7 +73,7 @@ const Footer = () => {
                     <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                         {/* Copyright */}
                         <p className="text-gray-400 text-sm">
-                            © 2025 LiveCompare Inc. All rights reserved.
+                            © 2025 Global Living Inc. All rights reserved.
                         </p>
 
                         {/* Social Icons */}
