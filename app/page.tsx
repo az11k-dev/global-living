@@ -35,9 +35,36 @@ const countries = [
         name: "Paris",
         rating: 4.5,
         country: "France",
-        col: 3800,
+        col: 21500,
         safety: "High",
-    }
+    },
+    {
+        id: 2,
+        img: "/images/debrecen.png",
+        name: "Debrecen",
+        rating: 5.0,
+        country: "Hungary",
+        col: 3200,
+        safety: "Very High",
+    },
+    {
+        id: 3,
+        img: "/images/pecs.png",
+        name: "Pecs",
+        rating: 4.0,
+        country: "Hungary",
+        col: 2500,
+        safety: "High",
+    },
+    {
+        id: 4,
+        img: "/images/berea.png",
+        name: "Berea",
+        rating: 4.0,
+        country: "USA",
+        col: 10200,
+        safety: "Medium",
+    },
 ]
 
 export default function Home() {
@@ -98,7 +125,7 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-            <div className={"px-24"}>
+            <div className={"px-24 mt-10"}>
                 <h1 className={"text-[30px] font-bold text-black"}>
                     Popular Destinations
                 </h1>
@@ -106,11 +133,12 @@ export default function Home() {
                     <p className={"text-base font-normal text-[#6B7280]"}>
                         Top rated cities by our community of digital nomads and expats.
                     </p>
-                    <button className={"flex items-center justify-center text-[#3B82F6] gap-1"}>
+                    <a href={"/cities"}
+                       className={"flex items-center justify-center text-[#3B82F6] gap-1 cursor-pointer hover:text-blue-600 transition"}>
                         View all cities <ArrowRight size={18}/>
-                    </button>
+                    </a>
                 </div>
-                <div>
+                <div className={"flex items-center justify-center gap-7"}>
                     {countries.map(item => (
                         <CityCard item={item} key={item.id}/>
                     ))}

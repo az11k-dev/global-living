@@ -19,7 +19,7 @@ const CityCard = ({item}: CityCardProps) => {
     return (
         // Main Card Container
         <div
-            className="max-w-[320px] bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 font-sans mx-auto my-10 transition-transform hover:scale-105 duration-300">
+            className="max-w-[320px] min-w-[300px] bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 font-sans my-10 transition-transform hover:scale-105 duration-300">
 
             {/* 1. Image Section */}
             <div className="relative h-[240px] w-full">
@@ -66,7 +66,7 @@ const CityCard = ({item}: CityCardProps) => {
 
                     {/* Cost of Living */}
                     <div className="flex flex-col gap-1">
-            <span className="text-[10px] font-bold text-slate-400 tracking-wider uppercase">
+            <span className="text-[11px] font-bold text-slate-400 tracking-wider uppercase">
               Cost of Living
             </span>
                         <div className="text-slate-900 font-bold text-lg">
@@ -77,7 +77,7 @@ const CityCard = ({item}: CityCardProps) => {
 
                     {/* Safety */}
                     <div className="flex flex-col gap-1 text-right">
-            <span className="text-[10px] font-bold text-slate-400 tracking-wider uppercase">
+            <span className="text-[11px] font-bold text-slate-400 tracking-wider uppercase">
               Safety
             </span>
                         <span className="text-indigo-600 font-bold text-lg">
