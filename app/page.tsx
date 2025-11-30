@@ -1,5 +1,6 @@
 import {ArrowRight, Flame} from "lucide-react";
 import CityCard from "@/components/CityCard";
+import AiMatchSection from "@/components/AiMatchSection";
 
 const data = [
     {
@@ -144,6 +145,7 @@ export default function Home() {
                     ))}
                 </div>
             </div>
+            <AiMatchSection/>
         </div>
     );
 }
