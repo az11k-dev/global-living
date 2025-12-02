@@ -27,7 +27,7 @@ const navItems = [
 
 export default function Navbar() {
     return (
-        <nav className="h-20 w-full flex items-center justify-between px-24 fixed z-999 bg-white">
+        <nav className="h-20 w-full flex items-center justify-between px-24 fixed z-999 bg-white border-b border-gray-200">
             {/* Logo */}
             <div className="flex items-center gap-2">
                 <Link href={"/"}>

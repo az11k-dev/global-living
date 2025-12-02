@@ -1,21 +1,7 @@
 import React from "react";
-
-type CostBreakdown = {
-    rent: number;
-    food: number;
-    transport: number;
-};
-
-type Country = {
-    id: number;
-    name: string;
-    flag: string; // Используем эмодзи для простоты, можно заменить на url картинки
-    image: string;
-    rating: number;
-    description: string;
-    costs: CostBreakdown;
-    totalCost: number;
-};
+import CountryCard from "@/components/CountryCard";
+import {Country} from "@/types";
+import FilterSection from "@/components/FilterSection";
 
 const countriesData: Country[] = [
     {
@@ -80,109 +66,11 @@ const countriesData: Country[] = [
     },
 ];
 
-// --- 2. Компоненты ---
-
-// Компонент одной строки цены
-const CostRow = ({label, value}: { label: string; value: string }) => (
-    <div className="flex justify-between text-xs mb-1">
-        <span className="text-gray-500">{label}</span>
-        <span className="font-semibold text-gray-900">{value}</span>
-    </div>
-);
-
-// Компонент Карточки
-const CountryCard = ({country}: { country: Country }) => {
-    return (
-        <div
-            className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col h-full">
-            {/* Изображение + Рейтинг */}
-            <div className="relative h-48 w-full bg-gray-200">
-                <img
-                    src={country.image}
-                    alt={country.name}
-                    className="w-full h-full object-cover"
-                />
-                <div
-                    className="absolute top-3 right-3 bg-white px-2 py-1 rounded-md text-xs font-bold shadow-sm flex items-center gap-1">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="w-4 h-4 text-yellow-400"
-                    >
-                        <path fillRule="evenodd"
-                              d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                              clipRule="evenodd"/>
-                    </svg>
-                    {country.rating}
-                </div>
-            </div>
-
-            {/* Контент */}
-            <div className="p-5 flex flex-col flex-grow">
-                {/* Заголовок */}
-                <div className="flex items-center gap-2 mb-2">
-                    <span className="text-2xl">{country.flag}</span>
-                    <h3 className="text-lg font-bold text-gray-900">{country.name}</h3>
-                </div>
-
-                {/* Описание */}
-                <p className="text-xs text-gray-500 mb-4 line-clamp-2 leading-relaxed">
-                    {country.description}
-                </p>
-
-                {/* Таблица цен (Spacer to push to bottom) */}
-                <div className="mt-auto">
-                    <CostRow label="Rent" value={`$${country.costs.rent}/mo`}/>
-                    <CostRow label="Food" value={`$${country.costs.food}/mo`}/>
-                    <CostRow label="Transport" value={`$${country.costs.transport}/mo`}/>
-
-                    <div className="h-px bg-gray-100 my-3"></div>
-
-                    <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-500">Total avg. cost</span>
-                        <span
-                            className="text-blue-600 font-bold text-lg">${country.totalCost.toLocaleString()}/mo</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-// Компонент Фильтров (Секция чекбоксов)
-const FilterSection = ({title, items, type = "checkbox"}: {
-    title: string,
-    items: { label: string, count?: number }[],
-    type?: "checkbox" | "radio"
-}) => (
-    <div className="mb-8">
-        <h4 className="font-bold text-sm text-gray-900 mb-3">{title}</h4>
-        <div className="space-y-2">
-            {items.map((item, idx) => (
-                <label key={idx} className="flex items-center group cursor-pointer">
-                    <input
-                        type={type}
-                        name={title} // для радио кнопок
-                        className={`
-                appearance-none w-4 h-4 border border-gray-300 
-                ${type === 'radio' ? 'rounded-full' : 'rounded'}
-                checked:bg-blue-600 checked:border-blue-600 focus:ring-2 focus:ring-blue-100 mr-3 transition-colors
-            `}
-                    />
-                    <span className="text-sm text-gray-600 flex-grow group-hover:text-gray-900">{item.label}</span>
-                    {item.count && <span className="text-xs text-gray-400">{item.count}</span>}
-                </label>
-            ))}
-        </div>
-    </div>
-);
-
 // --- 3. Главная страница ---
 
 export default function BrowseCountriesPage() {
     return (
-        <div className="min-h-screen bg-[#F8F9FB] font-sans text-gray-800">
+        <div className="min-h-screen bg-white font-sans text-gray-800">
 
             {/* Основной контейнер */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -212,7 +100,7 @@ export default function BrowseCountriesPage() {
                 <div className="flex gap-8">
 
                     {/* Левая колонка: Фильтры (Sidebar) */}
-                    <aside className="w-64 flex-shrink-0 hidden lg:block">
+                    <aside className="w-64 flex-shrink-0 hidden lg:block border-r border-gray-200 pr-5">
                         <div className="sticky top-8">
                             <div className="flex justify-between items-center mb-6">
                                 <h3 className="font-bold text-lg">Filters</h3>
@@ -221,7 +109,6 @@ export default function BrowseCountriesPage() {
                             </div>
 
                             <div className="h-px bg-gray-200 mb-6"></div>
-
                             <FilterSection
                                 title="Continent"
                                 items={[
@@ -280,7 +167,6 @@ export default function BrowseCountriesPage() {
                             {countriesData.map((country) => (
                                 <CountryCard key={country.id} country={country}/>
                             ))}
-                            {/* Дублируем данные чтобы заполнить сетку для демо */}
                             {countriesData.map((country) => (
                                 <CountryCard key={`${country.id}-dup`} country={{...country, id: country.id + 100}}/>
                             ))}
