@@ -1,17 +1,18 @@
 import React from "react";
 import CountryCard from "@/components/CountryCard";
-import {Country} from "@/types";
 import FilterSection from "@/components/FilterSection";
-import prisma from "@/lib/prisma";
+import {Country} from "@/types";
 
 // --- 3. Главная страница ---
 
 export default async function BrowseCountriesPage() {
-    const countries = await prisma.country.findMany({
-        include: {
-            costs: true,
-        },
+    const BASE_URL =
+        process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
+    const res = await fetch(`${BASE_URL}/api/countries`, {
+        cache: "no-cache"
     });
+    const countries = await res.json();
 
     return (
         <div className="min-h-screen bg-white font-sans text-gray-800">
@@ -108,7 +109,7 @@ export default async function BrowseCountriesPage() {
                     {/* Правая колонка: Сетка карточек */}
                     <main className="flex-grow">
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                            {countries.map((country) => (
+                            {countries.map((country: Country) => (
                                 <CountryCard key={country.id} country={country}/>
                             ))}
                         </div>

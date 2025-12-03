@@ -54,9 +54,9 @@ const CountryCard = ({country}: CountryProps) => {
 
                 {/* Таблица цен (Spacer to push to bottom) */}
                 <div className="mt-auto">
-                    <CostRow label="Rent" value={`$${country.costs.rent}/mo`}/>
-                    <CostRow label="Food" value={`$${country.costs.food}/mo`}/>
-                    <CostRow label="Transport" value={`$${country.costs.transport}/mo`}/>
+                    <CostRow label="Rent" value={`$${country?.costs?.rent}/mo`}/>
+                    <CostRow label="Food" value={`$${country?.costs?.food}/mo`}/>
+                    <CostRow label="Transport" value={`$${country?.costs?.transport}/mo`}/>
 
                     <div className="h-px bg-gray-100 my-3"></div>
 

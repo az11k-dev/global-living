@@ -1,0 +1,26 @@
+// app/api/countries/[id]/route.ts
+import {NextRequest, NextResponse} from "next/server";
+import prisma from "@/lib/prisma";
+
+export async function DELETE(
+    req: NextRequest,
+    context: { params: Promise<{ id: string }> }
+) {
+    const {id: idStr} = await context.params;
+    const id = Number(idStr);
+
+    if (isNaN(id)) {
+        return NextResponse.json({error: "Invalid ID"}, {status: 400});
+    }
+
+    try {
+        const deletedCountry = await prisma.country.delete({
+            where: {id},
+        });
+
+        return NextResponse.json({message: "Country deleted", country: deletedCountry});
+    } catch (error) {
+        console.error(error);
+        return NextResponse.json({error: "Country not found or already deleted"}, {status: 404});
+    }
+}
