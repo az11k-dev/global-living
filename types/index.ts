@@ -1,4 +1,6 @@
-export type CostBreakdown = {
+export type Costs = {
+    id: number;
+    countryId: number;
     rent: number;
     food: number;
     transport: number;
@@ -11,6 +13,6 @@ export type Country = {
     image: string;
     rating: number;
     description: string;
-    costs: CostBreakdown;
+    costs: Costs | null;
     totalCost: number;
 };

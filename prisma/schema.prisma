@@ -13,6 +13,15 @@ datasource db {
   provider = "postgresql"
 }
 
+model Costs {
+  id        Int     @id @default(autoincrement())
+  rent      Int
+  food      Int
+  transport Int
+  country   Country @relation(fields: [countryId], references: [id])
+  countryId Int     @unique
+}
+
 model Country {
   id          Int    @id @default(autoincrement())
   name        String
@@ -20,5 +29,6 @@ model Country {
   image       String
   rating      Float
   description String
+  costs       Costs?
   totalCost   Int
 }

@@ -2,73 +2,17 @@ import React from "react";
 import CountryCard from "@/components/CountryCard";
 import {Country} from "@/types";
 import FilterSection from "@/components/FilterSection";
-
-const countriesData: Country[] = [
-    {
-        id: 1,
-        name: "Thailand",
-        flag: "🇹🇭",
-        image: "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=600&q=80",
-        rating: 4.8,
-        description: "Tropical paradise with amazing food, friendly locals, and a thriving digital nomad scene.",
-        costs: {rent: 400, food: 300, transport: 50},
-        totalCost: 750,
-    },
-    {
-        id: 2,
-        name: "Portugal",
-        flag: "🇵🇹",
-        image: "https://images.unsplash.com/photo-1543783207-ec64e4d95325?auto=format&fit=crop&w=600&q=80",
-        rating: 4.7,
-        description: "Beautiful coastal cities, rich history, excellent food scene, and a welcoming vibe.",
-        costs: {rent: 800, food: 400, transport: 80},
-        totalCost: 1280,
-    },
-    {
-        id: 3,
-        name: "Mexico",
-        flag: "🇲🇽",
-        image: "https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?auto=format&fit=crop&w=600&q=80",
-        rating: 4.6,
-        description: "Vibrant culture, delicious cuisine, affordable living, and excellent networking.",
-        costs: {rent: 600, food: 350, transport: 60},
-        totalCost: 1010,
-    },
-    {
-        id: 4,
-        name: "Indonesia",
-        flag: "🇮🇩",
-        image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=600&q=80",
-        rating: 4.7,
-        description: "Island paradise with stunning beaches, rich culture, and a massive digital nomad hub.",
-        costs: {rent: 500, food: 280, transport: 70},
-        totalCost: 850,
-    },
-    {
-        id: 5,
-        name: "Spain",
-        flag: "🇪🇸",
-        image: "https://images.unsplash.com/photo-1543783207-ec64e4d95325?auto=format&fit=crop&w=600&q=80",
-        rating: 4.8,
-        description: "Mediterranean lifestyle, world-class cuisine, vibrant cities, and excellent quality of life.",
-        costs: {rent: 900, food: 450, transport: 90},
-        totalCost: 1440,
-    },
-    {
-        id: 6,
-        name: "Colombia",
-        flag: "🇨🇴",
-        image: "https://images.unsplash.com/photo-1583531352515-8884af319dc1?auto=format&fit=crop&w=600&q=80",
-        rating: 4.5,
-        description: "Diverse landscapes, warm people, affordable living, and growing digital hubs.",
-        costs: {rent: 550, food: 320, transport: 55},
-        totalCost: 925,
-    },
-];
+import prisma from "@/lib/prisma";
 
 // --- 3. Главная страница ---
 
-export default function BrowseCountriesPage() {
+export default async function BrowseCountriesPage() {
+    const countries = await prisma.country.findMany({
+        include: {
+            costs: true,
+        },
+    });
+
     return (
         <div className="min-h-screen bg-white font-sans text-gray-800">
 
@@ -164,11 +108,8 @@ export default function BrowseCountriesPage() {
                     {/* Правая колонка: Сетка карточек */}
                     <main className="flex-grow">
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                            {countriesData.map((country) => (
+                            {countries.map((country) => (
                                 <CountryCard key={country.id} country={country}/>
-                            ))}
-                            {countriesData.map((country) => (
-                                <CountryCard key={`${country.id}-dup`} country={{...country, id: country.id + 100}}/>
                             ))}
                         </div>
 
