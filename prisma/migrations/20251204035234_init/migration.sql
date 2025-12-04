@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Costs" ADD COLUMN     "internet" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "utilities" INTEGER NOT NULL DEFAULT 0;

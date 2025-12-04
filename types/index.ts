@@ -4,6 +4,8 @@ export type Costs = {
     rent: number;
     food: number;
     transport: number;
+    internet: number;
+    utilities: number;
 };
 
 export type Country = {

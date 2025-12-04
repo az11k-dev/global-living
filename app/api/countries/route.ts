@@ -30,6 +30,8 @@ export async function POST(req: NextRequest) {
                             rent: costs.rent,
                             food: costs.food,
                             transport: costs.transport,
+                            internet: costs.internet,
+                            utilities: costs.utilities
                         },
                     }
                     : undefined,

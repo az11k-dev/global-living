@@ -18,6 +18,8 @@ model Costs {
   rent      Int
   food      Int
   transport Int
+  internet  Int @default(0)
+  utilities Int @default(0)
   country   Country @relation(fields: [countryId], references: [id], onDelete: Cascade)
   countryId Int     @unique
 }
