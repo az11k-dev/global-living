@@ -1,19 +1,65 @@
-import React from "react";
+'use client';
+
+import React, {useState, useEffect, useCallback} from "react";
 import CountryCard from "@/components/CountryCard";
 import FilterSection from "@/components/FilterSection";
 import {Country} from "@/types";
+// Импортируем наш новый хук
+import {useCountryFilters} from "@/hooks/useCountryFilters";
+// Для имитации данных, пока у нас нет полной информации о странах:
+import {ContinentItems, LanguageItems, CostItems, SafetyItems} from "@/data/filterData";
 
-// --- 3. Главная страница ---
+// --- Основной компонент страницы ---
 
-export default async function BrowseCountriesPage() {
-    const BASE_URL =
-        process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+export default function BrowseCountriesPage() {
+    // 1. Используем наш кастомный хук для управления фильтрами
+    const {
+        getActiveFilter,
+        handleFilterChange,
+        handleClearAllFilters,
+        currentQueryString
+    } = useCountryFilters();
 
-    const res = await fetch(`${BASE_URL}/api/countries`, {
-        cache: "no-cache"
-    });
-    const countries = await res.json();
+    // 2. Состояние для данных
+    const [countries, setCountries] = useState<Country[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [totalCountries, setTotalCountries] = useState(0);
 
+    // 3. Функция загрузки данных (зависит только от currentQueryString)
+    const fetchCountries = useCallback(async () => {
+        setIsLoading(true);
+        // Запрос к API с текущими параметрами фильтрации
+        const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+        const url = `${BASE_URL}/api/countries?${currentQueryString}`;
+
+        try {
+            const res = await fetch(url, {cache: "no-cache"});
+            if (!res.ok) throw new Error("Failed to fetch countries");
+
+            const data = await res.json();
+
+            // В зависимости от того, как настроен ваш бэкенд:
+            setCountries(data.countries || data); // Если API возвращает { countries: [...], total: N }
+            setTotalCountries(data.total || data.length); // Используем длину массива как запасной вариант
+
+        } catch (error) {
+            console.error("Error fetching countries:", error);
+            setCountries([]);
+            setTotalCountries(0);
+        } finally {
+            setIsLoading(false);
+        }
+    }, [currentQueryString]);
+
+    // 4. Запуск загрузки при изменении фильтров
+    useEffect(() => {
+        fetchCountries();
+        // Принудительно прокручиваем вверх при загрузке новых данных (хороший UX)
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }, [fetchCountries]);
+
+
+    // --- Рендеринг ---
     return (
         <div className="min-h-screen bg-white font-sans text-gray-800">
 
@@ -26,20 +72,10 @@ export default async function BrowseCountriesPage() {
                         <h1 className="text-3xl font-bold text-gray-900 mb-2">Browse Countries</h1>
                         <p className="text-gray-500 text-sm">Discover your next digital nomad destination</p>
                     </div>
-                    <div className="hidden sm:block">
-                        {/* Простой селект */}
-                        <select
-                            className="bg-gray-100 border-none text-sm rounded-md px-4 py-2 text-gray-700 cursor-pointer hover:bg-gray-200 transition">
-                            <option>Most Popular</option>
-                            <option>Cheapest</option>
-                            <option>Safest</option>
-                        </select>
-                    </div>
                 </div>
 
                 <div className="flex justify-between items-center mb-6 text-sm text-gray-500">
-                    <span>407 countries found • Showing 1-12</span>
-                    {/* Мобильная кнопка фильтров могла бы быть здесь */}
+                    <span>{isLoading ? "Loading..." : `${totalCountries} countries found`}</span>
                 </div>
 
                 <div className="flex gap-8">
@@ -49,97 +85,81 @@ export default async function BrowseCountriesPage() {
                         <div className="sticky top-8">
                             <div className="flex justify-between items-center mb-6">
                                 <h3 className="font-bold text-lg">Filters</h3>
-                                <button className="text-blue-600 text-xs font-semibold hover:underline">Clear All
+                                {/* Используем обработчик из хука */}
+                                <button
+                                    onClick={handleClearAllFilters}
+                                    className="text-blue-600 text-xs font-semibold hover:underline cursor-pointer"
+                                >
+                                    Clear All
                                 </button>
                             </div>
 
                             <div className="h-px bg-gray-200 mb-6"></div>
+
+                            {/* --- Континент --- */}
                             <FilterSection
                                 title="Continent"
-                                items={[
-                                    {label: "Asia", count: 147},
-                                    {label: "Europe", count: 98},
-                                    {label: "South America", count: 62},
-                                    {label: "North America", count: 41},
-                                    {label: "Africa", count: 34},
-                                    {label: "Oceania", count: 21},
-                                ]}
+                                filterName="continent"
+                                activeValue={getActiveFilter("continent")}
+                                onFilterChange={handleFilterChange}
+                                items={ContinentItems} // Используем импортированные данные
                             />
 
                             <div className="h-px bg-gray-200 mb-6"></div>
 
+                            {/* --- Язык --- */}
                             <FilterSection
                                 title="Language"
-                                items={[
-                                    {label: "English"},
-                                    {label: "Spanish"},
-                                    {label: "Portuguese"},
-                                    {label: "French"},
-                                    {label: "German"},
-                                ]}
+                                filterName="language"
+                                activeValue={getActiveFilter("language")}
+                                onFilterChange={handleFilterChange}
+                                items={LanguageItems}
                             />
 
                             <div className="h-px bg-gray-200 mb-6"></div>
 
+                            {/* --- Стоимость --- */}
                             <FilterSection
                                 title="Average Monthly Cost"
-                                type="radio"
-                                items={[
-                                    {label: "Under $1,000"},
-                                    {label: "$1,000 - $2,000"},
-                                    {label: "$2,000 - $3,000"},
-                                    {label: "Over $3,000"},
-                                ]}
+                                filterName="maxCost"
+                                activeValue={getActiveFilter("maxCost")}
+                                onFilterChange={handleFilterChange}
+                                items={CostItems}
                             />
 
                             <div className="h-px bg-gray-200 mb-6"></div>
 
+                            {/* --- Безопасность --- */}
                             <FilterSection
-                                title="Safety Rating"
-                                items={[
-                                    {label: "4.5+ Excellent"},
-                                    {label: "4.0+ Very Good"},
-                                    {label: "3.5+ Good"},
-                                    {label: "3.0+ Fair"},
-                                ]}
+                                title="Rating"
+                                filterName="minRating"
+                                activeValue={getActiveFilter("minRating")}
+                                onFilterChange={handleFilterChange}
+                                items={SafetyItems}
                             />
                         </div>
                     </aside>
 
                     {/* Правая колонка: Сетка карточек */}
                     <main className="flex-grow">
-                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                            {countries.map((country: Country) => (
-                                <CountryCard key={country.id} country={country}/>
-                            ))}
-                        </div>
-
-                        {/* Пагинация */}
-                        <div className="mt-12 flex justify-center">
-                            <nav className="flex items-center gap-2">
-                                <button
-                                    className="px-4 py-2 bg-white border border-gray-200 rounded-md text-sm text-gray-500 hover:bg-gray-50 disabled:opacity-50">Previous
-                                </button>
-
-                                <button
-                                    className="w-10 h-10 bg-blue-600 text-white rounded-md text-sm font-bold flex items-center justify-center">1
-                                </button>
-                                <button
-                                    className="w-10 h-10 bg-white border border-gray-200 rounded-md text-sm text-gray-600 hover:bg-gray-50 flex items-center justify-center">2
-                                </button>
-                                <button
-                                    className="w-10 h-10 bg-white border border-gray-200 rounded-md text-sm text-gray-600 hover:bg-gray-50 flex items-center justify-center">3
-                                </button>
-                                <span className="text-gray-400 px-2">...</span>
-                                <button
-                                    className="w-10 h-10 bg-white border border-gray-200 rounded-md text-sm text-gray-600 hover:bg-gray-50 flex items-center justify-center">36
-                                </button>
-
-                                <button
-                                    className="px-4 py-2 bg-white border border-gray-200 rounded-md text-sm text-gray-500 hover:bg-gray-50">Next
-                                </button>
-                            </nav>
-                        </div>
+                        {/* 5. Индикация состояния загрузки/отсутствия данных */}
+                        {isLoading ? (
+                            <div className="text-center py-20 text-gray-500">
+                                <p>Loading countries...</p>
+                                {/*  */}
+                            </div>
+                        ) : countries.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                                {countries.map((country: Country) => (
+                                    <CountryCard key={country.id} country={country}/>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center py-20 text-gray-500">
+                                <h3 className="text-xl font-semibold mb-2">Oops! No results found.</h3>
+                                <p>Try adjusting your filters or clearing them to see more countries.</p>
+                            </div>
+                        )}
                     </main>
                 </div>
             </div>

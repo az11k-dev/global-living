@@ -14,23 +14,45 @@ datasource db {
 }
 
 model Costs {
-  id        Int     @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   rent      Int
   food      Int
   transport Int
-  internet  Int @default(0)
-  utilities Int @default(0)
-  country   Country @relation(fields: [countryId], references: [id], onDelete: Cascade)
-  countryId Int     @unique
+  internet  Int      @default(0)
+  utilities Int      @default(0)
+  country   Country? @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  countryId Int? @unique
+
+  city   City? @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  cityId Int? @unique
+}
+
+model City {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String
+  country     Country @relation(fields: [countryId], references: [id])
+  countryId   Int
+  rating      Float
+  image       String
+  population  Int
+  temperature Int
+  timezone    String
+
+  costs     Costs?
+  totalCost Int    @default(0)
 }
 
 model Country {
-  id          Int    @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   name        String
   flag        String
+  continent   String?
+  language    String?
   image       String
   rating      Float
   description String
   costs       Costs?
-  totalCost   Int
+  totalCost   Int     @default(0)
+  cities      City[]
 }
