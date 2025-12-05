@@ -1,3 +1,4 @@
+'use client';
 // hooks/useCountryFilters.ts
 import {useCallback} from 'react';
 import {useSearchParams, useRouter, usePathname} from 'next/navigation';
