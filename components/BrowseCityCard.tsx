@@ -1,9 +1,9 @@
 import React from "react";
-import {Country} from "@/types";
+import {City} from "@/types";
 import Image from "next/image";
 
-type CountryProps = {
-    country: Country;
+type CityProps = {
+    city: City;
 }
 
 const CostRow = ({label, value}: { label: string; value: string }) => (
@@ -13,14 +13,14 @@ const CostRow = ({label, value}: { label: string; value: string }) => (
     </div>
 );
 
-const CountryCard = ({country}: CountryProps) => {
+const BrowseCityCard = ({city}: CityProps) => {
     return (
         <div
             className="bg-white rounded-xl shadow-sm hover:shadow-md cursor-pointer overflow-hidden border border-gray-100 flex flex-col h-full transition-transform hover:scale-105 duration-300">
             {/* Изображение + Рейтинг */}
             <div className="relative h-48 w-full bg-gray-200">
-                <Image src={country.image}
-                       alt={country.name}
+                <Image src={city?.image}
+                       alt={city?.name}
                        fill
                        className="w-full h-full object-cover"/>
                 <div
@@ -35,7 +35,7 @@ const CountryCard = ({country}: CountryProps) => {
                               d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
                               clipRule="evenodd"/>
                     </svg>
-                    {country.rating}
+                    {city?.rating}
                 </div>
             </div>
 
@@ -43,31 +43,30 @@ const CountryCard = ({country}: CountryProps) => {
             <div className="p-5 flex flex-col flex-grow">
                 {/* Заголовок */}
                 <div className="flex items-center gap-2 mb-2">
-                    <span className="text-2xl">{country.flag}</span>
-                    <h3 className="text-lg font-bold text-gray-900">{country.name}</h3>
+                    <h3 className="text-lg font-bold text-gray-900">{city?.name}, {city?.country?.name}</h3>
                 </div>
 
                 {/* Описание */}
                 <p className="text-xs text-gray-500 mb-4 line-clamp-2 leading-relaxed">
-                    {country.description}
+                    {city?.description}
                 </p>
 
                 {/* Таблица цен (Spacer to push to bottom) */}
                 <div className="mt-auto">
-                    <CostRow label="Rent" value={`$${country?.costs?.rent}/mo`}/>
-                    <CostRow label="Food" value={`$${country?.costs?.food}/mo`}/>
-                    <CostRow label="Transport" value={`$${country?.costs?.transport}/mo`}/>
+                    <CostRow label="Rent" value={`$${city?.costs?.rent}/mo`}/>
+                    <CostRow label="Food" value={`$${city?.costs?.food}/mo`}/>
+                    <CostRow label="Transport" value={`$${city?.costs?.transport}/mo`}/>
 
                     <div className="h-px bg-gray-100 my-3"></div>
 
                     <div className="flex justify-between items-center">
                         <span className="text-sm text-gray-500">Total avg. cost</span>
                         <span
-                            className="text-blue-600 font-bold text-lg">${country.totalCost.toLocaleString()}/mo</span>
+                            className="text-blue-600 font-bold text-lg">${city?.totalCost.toLocaleString()}/mo</span>
                     </div>
                 </div>
             </div>
         </div>
     )
 }
-export default CountryCard;
+export default BrowseCityCard;

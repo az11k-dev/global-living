@@ -2,12 +2,19 @@
 import {FilterItem} from "@/components/FilterSection";
 
 export const ContinentItems: FilterItem[] = [
-    {label: "Asia", value: "asia", count: 147},
-    {label: "Europe", value: "europe", count: 98},
-    {label: "South America", value: "south-america", count: 62},
-    {label: "North America", value: "north-america", count: 41},
-    {label: "Africa", value: "africa", count: 34},
-    {label: "Oceania", value: "oceania", count: 21},
+    {label: "Asia", value: "asia"},
+    {label: "Europe", value: "europe"},
+    {label: "South America", value: "south america"},
+    {label: "North America", value: "north america"},
+    {label: "Africa", value: "africa"},
+    {label: "Oceania", value: "oceania"},
+];
+
+export const CountryItems: FilterItem[] = [
+    {label: "USA", value: "usa"},
+    {label: "Hungary", value: "hungary"},
+    {label: "Uzbekistan", value: "uzbekistan"},
+    {label: "Germany", value: "germany"},
 ];
 
 export const LanguageItems: FilterItem[] = [
@@ -24,6 +31,13 @@ export const CostItems: FilterItem[] = [
     {label: "$1,000 - $2,000", value: "2000"},
     {label: "$2,000 - $3,000", value: "3000"},
     {label: "Over $3,000", value: "300000"},
+];
+
+export const PopulationItems: FilterItem[] = [
+    {label: "50,000+", value: "50000"},
+    {label: "100,000+", value: "100000"},
+    {label: "200,000+", value: "200000"},
+    {label: "500,000+", value: "500000"},
 ];
 
 export const SafetyItems: FilterItem[] = [

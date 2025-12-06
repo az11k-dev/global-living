@@ -24,3 +24,49 @@ export async function DELETE(
         return NextResponse.json({error: "City not found or already deleted"}, {status: 404});
     }
 }
+
+export async function GET(
+    req: NextRequest,
+    context: { params: Promise<{ id: string }> }
+) {
+    const {id: idStr} = await context.params;
+    const id = Number(idStr);
+
+    if (isNaN(id)) {
+        return NextResponse.json({error: "Invalid ID"}, {status: 400});
+    }
+
+    const city = await prisma.city.findUnique({
+        where: {id},
+        include: {
+            costs: true,
+            country: true,
+        },
+    });
+    return NextResponse.json(city);
+}
+
+export async function PATCH(
+    req: NextRequest,
+    context: { params: Promise<{ id: string }> }
+) {
+    const {id: idStr} = await context.params;
+    const id = Number(idStr);
+
+    if (isNaN(id)) {
+        return NextResponse.json({error: "Invalid ID"}, {status: 400});
+    }
+
+    const data = await req.json();
+
+    try {
+        const updated = await prisma.city.update({
+            where: {id},
+            data: data,
+        });
+        return NextResponse.json({message: "City updated", city: updated});
+    } catch (error) {
+        console.error(error);
+        return NextResponse.json({error: "City not found"}, {status: 404})
+    }
+}

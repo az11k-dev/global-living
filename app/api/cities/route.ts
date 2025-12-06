@@ -5,6 +5,8 @@ export async function GET(req: NextRequest) {
     const search = req.nextUrl.searchParams;
 
     const name = search.get("name");
+    const population = search.get("population");
+    const country = search.get("country");
     const minRating = search.get("minRating");
     const maxCost = search.get("maxCost");
 
@@ -12,7 +14,16 @@ export async function GET(req: NextRequest) {
         where: {
             name: name ? {contains: name, mode: 'insensitive'} : undefined,
             rating: minRating ? {gte: Number(minRating)} : undefined,
-            totalCost: maxCost ? {lte: Number(maxCost)} : undefined
+            totalCost: maxCost ? {lte: Number(maxCost)} : undefined,
+            population: population ? {gte: Number(population)} : undefined,
+            country: country
+                ? {
+                    name: {
+                        contains: country,
+                        mode: "insensitive"
+                    }
+                }
+                : undefined
         },
         include: {
             costs: true,

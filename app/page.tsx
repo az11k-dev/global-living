@@ -3,33 +3,6 @@ import CityCard from "@/components/CityCard";
 import AiMatchSection from "@/components/AiMatchSection";
 import {City} from "@/types";
 
-const data = [
-    {
-        id: 1,
-        city: "Debrecen",
-        country: "Hungary",
-        img: "https://edu.unideb.hu/tartalom/feltoltott_kepek/kepek/shutterstock_176965334.jpg"
-    },
-    {
-        id: 2,
-        city: "Pecs",
-        country: "Hungary",
-        img: "https://international.pte.hu/sites/international.pte.hu/files/share/INTERNATIONAL/university/P%C3%A9cs_k%C3%A9p_Kisfali_Gergely.jpg"
-    },
-    {
-        id: 3,
-        city: "Berea",
-        country: "USA",
-        img: "https://upload.wikimedia.org/wikipedia/commons/4/4c/Berea_Kentucky_City_Hall.jpg"
-    },
-    {
-        id: 4,
-        city: "Riyadh",
-        country: "Saudi Arabia",
-        img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsVpUb_7Urdno_LuRtJJ82lLneSxuwiZ1Tww&s"
-    }
-];
-
 export default async function Home() {
 
     const BASE_URL =
@@ -77,19 +50,19 @@ export default async function Home() {
                             </p>
                         </div>
                         <div className={"flex items-center justify-center gap-4 mt-5"}>
-                            {data.map((item) => (
+                            {cities.map((item) => (
                                 <div
-                                    style={{backgroundImage: `url(${item?.img})`}}
+                                    style={{backgroundImage: `url(${item?.image})`}}
                                     className="relative cursor-pointer bg-center bg-cover bg-no-repeat min-w-[200px] min-h-[150px] rounded-lg flex items-center justify-end flex-col overflow-hidden pb-2"
                                     key={item.id}
                                 >
                                     <div className="absolute inset-0 bg-black/40"></div>
 
                                     <p className="text-white text-sm font-bold relative z-10">
-                                        {item?.city}
+                                        {item?.name}
                                     </p>
                                     <p className="text-white text-xs font-extralight relative z-10">
-                                        {item?.country}
+                                        {item?.country?.name}
                                     </p>
                                 </div>
                             ))}

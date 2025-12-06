@@ -4,7 +4,6 @@ import React from 'react';
 export interface FilterItem {
     label: string;
     value: string; // Обязательное поле для URL
-    count?: number;
 }
 
 interface FilterSectionProps {
@@ -81,15 +80,6 @@ const FilterSection: React.FC<FilterSectionProps> = ({
                             >
                                 {item.label}
                             </span>
-
-                            {/* Счетчик */}
-                            {item.count && (
-                                <span className={`text-xs px-2 py-0.5 rounded-full transition-colors 
-                                    ${isChecked ? 'bg-white text-blue-600 font-semibold' : 'text-gray-400 bg-gray-50'}`}
-                                >
-                                    {item.count}
-                                </span>
-                            )}
                         </div>
                     );
                 })}
