@@ -1,18 +1,10 @@
 import React from 'react';
 import Image from 'next/image';
+import {City} from "@/types";
 
-type Item = {
-    id: number;
-    img: string;
-    name: string;
-    rating: number;
-    country: string;
-    col: number;
-    safety: string;
-}
 
 type CityCardProps = {
-    item: Item;
+    item: City;
 }
 
 const CityCard = ({item}: CityCardProps) => {
@@ -23,9 +15,8 @@ const CityCard = ({item}: CityCardProps) => {
 
             {/* 1. Image Section */}
             <div className="relative h-[240px] w-full">
-                {/* Replace 'src' with your actual image path */}
                 <Image
-                    src={item?.img}
+                    src={item?.image}
                     alt={item?.name}
                     fill
                     className="object-cover"
@@ -55,7 +46,7 @@ const CityCard = ({item}: CityCardProps) => {
                 {/* Title & Subtitle */}
                 <div className="mb-4">
                     <h2 className="text-2xl font-bold text-slate-900">{item?.name}</h2>
-                    <p className="text-slate-500 font-medium">{item?.country}</p>
+                    <p className="text-slate-500 font-medium">{item?.country?.name}</p>
                 </div>
 
                 {/* Divider Line */}
@@ -70,7 +61,7 @@ const CityCard = ({item}: CityCardProps) => {
               Cost of Living
             </span>
                         <div className="text-slate-900 font-bold text-lg">
-                            ${item?.col.toLocaleString("en-US")}
+                            ${item?.totalCost.toLocaleString("en-US")}
                             <span className="text-slate-400 text-sm font-normal">/mo</span>
                         </div>
                     </div>
@@ -78,10 +69,10 @@ const CityCard = ({item}: CityCardProps) => {
                     {/* Safety */}
                     <div className="flex flex-col gap-1 text-right">
             <span className="text-[11px] font-bold text-slate-400 tracking-wider uppercase">
-              Safety
+              Temperature
             </span>
                         <span className="text-indigo-600 font-bold text-lg">
-              {item?.safety}
+              {item?.temperature}°C
             </span>
                     </div>
 

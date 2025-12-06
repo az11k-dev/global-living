@@ -1,5 +1,6 @@
 import React from "react";
 import {Country} from "@/types";
+import Image from "next/image";
 
 type CountryProps = {
     country: Country;
@@ -18,11 +19,9 @@ const CountryCard = ({country}: CountryProps) => {
             className="bg-white rounded-xl shadow-sm hover:shadow-md cursor-pointer overflow-hidden border border-gray-100 flex flex-col h-full transition-transform hover:scale-105 duration-300">
             {/* Изображение + Рейтинг */}
             <div className="relative h-48 w-full bg-gray-200">
-                <img
-                    src={country.image}
-                    alt={country.name}
-                    className="w-full h-full object-cover"
-                />
+                <Image src={country.image}
+                       alt={country.name}
+                       className="w-full h-full object-cover"/>
                 <div
                     className="absolute top-3 right-3 bg-white px-2 py-1 rounded-md text-xs font-bold shadow-sm flex items-center gap-1">
                     <svg

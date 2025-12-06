@@ -1,6 +1,7 @@
 import {ArrowRight, Flame} from "lucide-react";
 import CityCard from "@/components/CityCard";
 import AiMatchSection from "@/components/AiMatchSection";
+import {City} from "@/types";
 
 const data = [
     {
@@ -29,46 +30,16 @@ const data = [
     }
 ];
 
-const countries = [
-    {
-        id: 1,
-        img: "/images/paris.png",
-        name: "Paris",
-        rating: 4.5,
-        country: "France",
-        col: 21500,
-        safety: "High",
-    },
-    {
-        id: 2,
-        img: "/images/debrecen.png",
-        name: "Debrecen",
-        rating: 5.0,
-        country: "Hungary",
-        col: 3200,
-        safety: "Very High",
-    },
-    {
-        id: 3,
-        img: "/images/pecs.png",
-        name: "Pecs",
-        rating: 4.0,
-        country: "Hungary",
-        col: 2500,
-        safety: "High",
-    },
-    {
-        id: 4,
-        img: "/images/berea.png",
-        name: "Berea",
-        rating: 4.0,
-        country: "USA",
-        col: 10200,
-        safety: "Medium",
-    },
-]
+export default async function Home() {
 
-export default function Home() {
+    const BASE_URL =
+        process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
+    const res = await fetch(`${BASE_URL}/api/cities`, {
+        cache: "no-cache"
+    });
+    const cities: City[] = await res.json();
+
     return (
         <div>
             <div
@@ -140,7 +111,7 @@ export default function Home() {
                     </a>
                 </div>
                 <div className={"flex items-center justify-center gap-7"}>
-                    {countries.map(item => (
+                    {cities.map(item => (
                         <CityCard item={item} key={item.id}/>
                     ))}
                 </div>

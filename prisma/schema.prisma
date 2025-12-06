@@ -21,10 +21,10 @@ model Costs {
   internet  Int      @default(0)
   utilities Int      @default(0)
   country   Country? @relation(fields: [countryId], references: [id], onDelete: Cascade)
-  countryId Int? @unique
+  countryId Int?     @unique
 
   city   City? @relation(fields: [cityId], references: [id], onDelete: Cascade)
-  cityId Int? @unique
+  cityId Int?  @unique
 }
 
 model City {

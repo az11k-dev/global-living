@@ -19,6 +19,7 @@ export type City = {
     temperature: number;
     timezone: string;
     costs: Costs | null;
+    country: Country | null;
     totalCost: number;
 };
 
