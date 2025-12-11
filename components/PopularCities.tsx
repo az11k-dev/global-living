@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const data = [
     {
@@ -45,7 +46,7 @@ export default function PopularCities() {
                     {data.map((item, index) => (
                         <div key={index}
                              className={"flex flex-col bg-white rounded-xl shadow-sm   cursor-pointer overflow-hidden border border-gray-100  h-full"}>
-                            <img src={item.image} alt=""/>
+                            <Image fill src={item?.image} alt={item?.name}/>
                             <div className={"p-[20px]"}>
                                 <h1 className={"text-[20px] font-[600]"}>{item.name}</h1>
                                 <h1 className={"text-gray-700"}>{item.description}</h1>
