@@ -17,7 +17,7 @@ export default async function Home() {
         <div>
             <div
                 className={"relative h-[91.4vh] w-full bg-[url(/images/home-background.png)] bg-no-repeat bg-cover bg-center flex items-center justify-center"}>
-                <div className="absolute inset-0 bg-black/40"></div>
+                {/*<div className="absolute inset-0 bg-black/40"></div>*/}
                 <div className={"z-10 flex-col justify-center items-center"}>
                     <div className={"flex items-center justify-center mb-3"}>
                         <button

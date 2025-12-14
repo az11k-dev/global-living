@@ -23,8 +23,7 @@ const CountryCard = ({country}: CountryProps) => {
                        alt={country.name}
                        fill
                        className="w-full h-full object-cover"/>
-                <div
-                    className="absolute top-3 right-3 bg-white px-2 py-1 rounded-md text-xs font-bold shadow-sm flex items-center gap-1">
+                <div className="absolute top-3 right-3 bg-white px-2 py-1 rounded-md text-xs font-bold shadow-sm flex items-center gap-1">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"

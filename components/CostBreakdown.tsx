@@ -1,11 +1,17 @@
-export default function CostBreakdown(){
+import {Country} from "@/types";
+
+type CountryProps = {
+    country: Country;
+}
+
+
+export default function CostBreakdown({country}: CountryProps) {
     const expenseData = [
-        {name: 'Rent', value: 700, color: '#4c6ef5'},
-        {name: 'Food', value: 300, color: '#40c057'},
-        {name: 'Transport', value: 40, color: '#fab005'},
-        {name: 'Internet', value: 30, color: '#9c36b5'},
-        {name: 'Utilities', value: 80, color: '#f03e3e'},
-        {name: 'Entertainment', value: 150, color: '#fa5252'},
+        {name: 'Rent', value: country?.costs?.rent, color: '#4c6ef5'},
+        {name: 'Food', value: country?.costs?.food, color: '#40c057'},
+        {name: 'Transport', value: country?.costs?.transport, color: '#fab005'},
+        {name: 'Internet', value: country?.costs?.internet, color: '#9c36b5'},
+        {name: 'Utilities', value: country?.costs?.utilities, color: '#f03e3e'},
     ];
 
     const totalMonthly = expenseData.reduce((sum, item) => sum + item.value, 0);
@@ -22,8 +28,9 @@ export default function CostBreakdown(){
                         <div key={index} className="flex flex-col">
                             <div className="flex justify-between items-center mb-1">
 
-                                <span className="text-gray-700 font-[500]">{item.name} ({index === 0 ? '1BR' : ' '})</span>
-                                <span className="text-gray-700 font-[500]">€{item.value}</span>
+                                <span
+                                    className="text-gray-700 font-[500]">{item.name} </span>
+                                <span className="text-gray-700 font-[500]">${item.value}</span>
                             </div>
 
                             <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
@@ -41,7 +48,7 @@ export default function CostBreakdown(){
 
             <div className="border-t border-gray-200 mt-6 pt-4 flex justify-between items-center">
                 <span className="text-[16px] font-[600] text-gray-800">Total Monthly</span>
-                <span className="text-[18px] font-[600] text-blue-600">€{totalMonthly.toLocaleString()}</span>
+                <span className="text-[18px] font-[600] text-blue-600">${totalMonthly.toLocaleString()}</span>
             </div>
         </div>
     );
