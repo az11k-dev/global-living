@@ -1,5 +1,10 @@
 import prisma from "@/lib/prisma";
 import {NextRequest, NextResponse} from "next/server";
+import {handleOptions, withCors} from "@/lib/cors";
+
+export async function OPTIONS(req: NextRequest) {
+    return handleOptions();
+}
 
 export async function GET(req: NextRequest) {
     const search = req.nextUrl.searchParams;
@@ -23,7 +28,7 @@ export async function GET(req: NextRequest) {
             cities: true
         },
     });
-    return NextResponse.json(countries);
+    return withCors(NextResponse.json(countries));
 }
 
 export async function POST(req: NextRequest) {
@@ -60,9 +65,9 @@ export async function POST(req: NextRequest) {
             },
         });
 
-        return NextResponse.json(country);
+        return withCors(NextResponse.json(country));
     } catch (error) {
         console.error(error);
-        return NextResponse.json({error: "Failed to create country"}, {status: 500});
+        return withCors(NextResponse.json({error: "Failed to create country"}, {status: 500}));
     }
 }
