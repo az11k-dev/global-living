@@ -13,6 +13,38 @@ datasource db {
   provider = "postgresql"
 }
 
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String?
+  name      String?
+  image     String?
+  provider  String // credentials | google | github etc
+  createdAt DateTime @default(now())
+
+  reviews Review[]
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  rating    Int
+  text      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+
+  city   City? @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  cityId Int?
+
+  country   Country? @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  countryId Int?
+
+  @@unique([userId, cityId])
+  @@unique([userId, countryId])
+}
+
 model Costs {
   id        Int      @id @default(autoincrement())
   rent      Int
@@ -40,7 +72,8 @@ model City {
   timezone    String
 
   costs     Costs?
-  totalCost Int    @default(0)
+  totalCost Int      @default(0)
+  reviews   Review[]
 }
 
 model Country {
@@ -51,8 +84,11 @@ model Country {
   language    String?
   image       String
   rating      Float
+  temperature Int?
   description String
-  costs       Costs?
-  totalCost   Int     @default(0)
-  cities      City[]
+
+  costs     Costs?
+  totalCost Int      @default(0)
+  cities    City[]
+  reviews   Review[]
 }

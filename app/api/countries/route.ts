@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
-        const {name, flag, continent, language, image, rating, description, costs, totalCost} = body;
+        const {name, flag, continent, temperature, language, image, rating, description, costs, totalCost} = body;
 
         // Создаём страну вместе с costs
         const country = await prisma.country.create({
@@ -37,6 +37,7 @@ export async function POST(req: NextRequest) {
                 name,
                 flag,
                 continent,
+                temperature,
                 language,
                 image,
                 rating,
