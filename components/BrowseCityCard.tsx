@@ -1,6 +1,7 @@
 import React from "react";
 import {City} from "@/types";
 import Image from "next/image";
+import {useRouter} from "next/navigation";
 
 type CityProps = {
     city: City;
@@ -14,8 +15,12 @@ const CostRow = ({label, value}: { label: string; value: string }) => (
 );
 
 const BrowseCityCard = ({city}: CityProps) => {
+    const router = useRouter();
     return (
         <div
+            onClick={() => {
+                router.push(`/city/${city?.id}`)
+            }}
             className="bg-white rounded-xl shadow-sm hover:shadow-md cursor-pointer overflow-hidden border border-gray-100 flex flex-col h-full transition-transform hover:scale-105 duration-300">
             {/* Изображение + Рейтинг */}
             <div className="relative h-48 w-full bg-gray-200">
