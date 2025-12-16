@@ -4,7 +4,7 @@ import {Bot, TrendingUp, Wallet, Sparkles} from 'lucide-react';
 const AiMatchSection = () => {
     return (
         <section
-            className="bg-gradient-to-r from-[#111827] to-[#312E81] text-white flex items-center justify-center relative overflow-hidden py-16">
+            className="bg-gradient-to-r px-24 from-[#111827] to-[#312E81] text-white flex items-center justify-center relative overflow-hidden py-16">
             <div
                 className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-900/30 rounded-full blur-[120px] pointer-events-none"/>
             <div
