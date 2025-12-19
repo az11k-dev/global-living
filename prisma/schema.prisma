@@ -60,16 +60,19 @@ model Costs {
 }
 
 model City {
-  id          Int     @id @default(autoincrement())
-  name        String
-  description String
-  country     Country @relation(fields: [countryId], references: [id])
-  countryId   Int
-  rating      Float
-  image       String
-  population  Int
-  temperature Int
-  timezone    String
+  id            Int     @id @default(autoincrement())
+  name          String
+  description   String
+  country       Country @relation(fields: [countryId], references: [id])
+  countryId     Int
+  rating        Float
+  image         String
+  population    Int
+  temperature   Int
+  timezone      String
+  internetSpeed String?
+  lat Float?
+  lng Float?
 
   costs     Costs?
   totalCost Int      @default(0)
