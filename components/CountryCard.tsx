@@ -1,6 +1,7 @@
 import React from "react";
 import {Country} from "@/types";
 import Image from "next/image";
+import {useRouter} from "next/navigation";
 
 type CountryProps = {
     country: Country;
@@ -12,9 +13,14 @@ const CostRow = ({label, value}: { label: string; value: string }) => (
         <span className="font-semibold text-gray-900">{value}</span>
     </div>
 );
-    const CountryCard = ({country}: CountryProps) => {
+
+const CountryCard = ({country}: CountryProps) => {
+    const router = useRouter();
     return (
         <div
+            onClick={() => {
+                router.push(`/country/${country?.id}`)
+            }}
             className="bg-white rounded-xl shadow-sm hover:shadow-md cursor-pointer overflow-hidden border border-gray-100 flex flex-col h-full transition-transform hover:scale-105 duration-300">
             {/* Изображение + Рейтинг */}
             <div className="relative h-48 w-full bg-gray-200">
@@ -22,7 +28,8 @@ const CostRow = ({label, value}: { label: string; value: string }) => (
                        alt={country.name}
                        fill
                        className="w-full h-full object-cover"/>
-                <div className="absolute top-3 right-3 bg-white px-2 py-1 rounded-md text-xs font-bold shadow-sm flex items-center gap-1">
+                <div
+                    className="absolute top-3 right-3 bg-white px-2 py-1 rounded-md text-xs font-bold shadow-sm flex items-center gap-1">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"

@@ -28,6 +28,7 @@ export type Country = {
     name: string;
     flag: string;
     continent: string;
+    temperature: number;
     language: string;
     image: string;
     rating: number;
