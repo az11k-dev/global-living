@@ -11,19 +11,24 @@ const data = [
         id: 1,
         countryName: "Australia",
         image: flag,
+        txt: "  Lorem ipsum is placeholder text1",
+        unTxt: " Lorem ipsum is placeholder text1",
     },
     {
         id: 2,
         countryName: "Russia",
         image: flag,
+        txt: "  Lorem ipsum is placeholder text2",
+        unTxt: " Lorem ipsum is placeholder text2",
     },
     {
         id: 3,
         countryName: "India",
         image: flag,
+        txt: "  Lorem ipsum is placeholder text3",
+        unTxt: " Lorem ipsum is placeholder text3",
     }
 ]
-
 export default function AIsummary() {
     return (
         <div className={"py-[30px] flex  justify-between gap-10"}>
@@ -43,35 +48,25 @@ export default function AIsummary() {
                         for previewing layouts and visual mockups.
                     </h1>
                     <h1 className={"text-[18px] font-[700] text-black mt-[20px]"}>Pros:</h1>
-                    <h1 className={"flex items-center gap-3"}>
-                        <Check color="green"/>
-                        Lorem ipsum is placeholder text
-                    </h1>
-                    <h1 className={"flex items-center gap-3"}>
-                        <Check color="green"/>
-                        Lorem ipsum is placeholder text
-                    </h1>
-                    <h1 className={"flex items-center gap-3"}>
-                        <Check color="green"/>
-                        Lorem ipsum is placeholder text
-                    </h1>
-                    <h1 className={"flex items-center gap-3"}>
-                        <Check color="green"/>
-                        Lorem ipsum is placeholder text
-                    </h1>
+                    {data.map((item, index) => (
+                        <div key={index}>
+                            <h1 className={"flex items-center gap-3"}>
+                                <Check color="green"/>
+                                {item.txt}
+                            </h1>
+                        </div>
+                    ))}
+
                     <h1 className={"text-[18px] font-[700] text-black mt-[20px]"}>Cons:</h1>
-                    <h1 className={"flex items-center gap-3"}>
-                        <X color="red"/>
-                        Lorem ipsum is placeholder text
-                    </h1>
-                    <h1 className={"flex items-center gap-3"}>
-                        <X color="red"/>
-                        Lorem ipsum is placeholder text
-                    </h1>
-                    <h1 className={"flex items-center gap-3"}>
-                        <X color="red"/>
-                        Lorem ipsum is placeholder text
-                    </h1>
+                    {data.map((item, index) => (
+                        <div key={index}>
+                            <h1 className={"flex items-center gap-3"}>
+                                <X color="red"/>
+                                {item.unTxt}
+                            </h1>
+                        </div>
+                    ))}
+
                 </div>
                 <div className={"flex items-center justify-between py-[20px] border-t-1 border-blue-300"}>
                     <h1 className={"text-[18px] font-[700] text-black mt-[20px]"}>

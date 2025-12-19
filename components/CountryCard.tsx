@@ -12,8 +12,7 @@ const CostRow = ({label, value}: { label: string; value: string }) => (
         <span className="font-semibold text-gray-900">{value}</span>
     </div>
 );
-
-const CountryCard = ({country}: CountryProps) => {
+    const CountryCard = ({country}: CountryProps) => {
     return (
         <div
             className="bg-white rounded-xl shadow-sm hover:shadow-md cursor-pointer overflow-hidden border border-gray-100 flex flex-col h-full transition-transform hover:scale-105 duration-300">

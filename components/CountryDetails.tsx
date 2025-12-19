@@ -1,5 +1,5 @@
 import {Country} from "@/types";
-import {CloudSunRain, FileText, HeartCrack, ShieldHalf, Sun,PersonStanding} from "lucide-react";
+import {CloudSunRain, FileText, HeartCrack, ShieldHalf, Sun, PersonStanding, Globe, MapPinned} from "lucide-react";
 import flag from "@/public/images/uzb.png"
 import Image from "next/image";
 import React from "react";
@@ -15,7 +15,7 @@ export default function CountryDetails({country}: CountryProps) {
         {
             id: 1,
             icon: <ShieldHalf color={"green"}/>,
-            number: 8.5,
+            number: country?.rating,
             title: "Safety",
             bg: "#dcfce7",
             color: "green",
@@ -23,18 +23,26 @@ export default function CountryDetails({country}: CountryProps) {
         {
             id: 2,
             icon: <CloudSunRain size={28} color={"blue"}/>,
-            number: 9,
+            number: country?.temperature,
             title: "Climate",
             bg: "#dbeafe",
             color: "blue"
         },
         {
             id: 3,
-            icon: <PersonStanding size={28} color={"purple"}/>,
+            icon: <Globe size={28} color={"purple"}/> ,
             number: country?.language,
-            title: "Population",
+            title: "Language",
             bg: "#f3e8ff",
             color: "purple"
+        },
+        {
+            id: 4,
+            icon: <MapPinned size={28} color={"orange"}/>  ,
+            number: country?.continent,
+            title: "Continent",
+            bg: "#ffedd4",
+            color: "orange"
         },
 
     ]
@@ -42,7 +50,7 @@ export default function CountryDetails({country}: CountryProps) {
     return (
         <div>
             <div
-                className=" p-[40px] bg-white rounded-xl shadow-sm  cursor-pointer overflow-hidden border border-gray-100  h-full ">
+                className=" p-[40px] bg-white  rounded-xl shadow-sm  cursor-pointer overflow-hidden border border-gray-100  h-full ">
                 <div className={"flex items-center gap-3 bg-purple-10"}>
                     <div>
                         {/*<Image src={country?.flag} height={50} width={50}  alt={"flag"} />*/}
@@ -52,7 +60,7 @@ export default function CountryDetails({country}: CountryProps) {
                         <h1 className={"text-gray-700"}>{country.description}</h1>
                     </div>
                 </div>
-                <div className={"flex items-center justify-center gap-6 mt-[20px]"}>
+                <div className={"flex items-center justify-between gap-6 mt-[20px]"}>
                     {data.map((item, i) => (
                         <div style={{
                             background: item.bg, lineHeight: "15px"

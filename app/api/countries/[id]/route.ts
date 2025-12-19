@@ -1,6 +1,11 @@
 // app/api/countries/[id]/route.ts
 import {NextRequest, NextResponse} from "next/server";
 import prisma from "@/lib/prisma";
+import {handleOptions, withCors} from "@/lib/cors";
+
+export async function OPTIONS(req: NextRequest) {
+    return handleOptions();
+}
 
 export async function DELETE(
     req: NextRequest,
@@ -18,10 +23,10 @@ export async function DELETE(
             where: {id},
         });
 
-        return NextResponse.json({message: "Country deleted", country: deletedCountry});
+        return withCors(NextResponse.json({message: "Country deleted", country: deletedCountry}));
     } catch (error) {
         console.error(error);
-        return NextResponse.json({error: "Country not found or already deleted"}, {status: 404});
+        return withCors(NextResponse.json({error: "Country not found or already deleted"}, {status: 404}));
     }
 }
 
@@ -33,7 +38,7 @@ export async function GET(
     const id = Number(idStr);
 
     if (isNaN(id)) {
-        return NextResponse.json({error: "Invalid ID"}, {status: 400});
+        return withCors(NextResponse.json({error: "Invalid ID"}, {status: 400}));
     }
 
     const country = await prisma.country.findUnique({
@@ -43,7 +48,7 @@ export async function GET(
             cities: true,
         },
     });
-    return NextResponse.json(country);
+    return withCors(NextResponse.json(country));
 }
 
 export async function PATCH(
@@ -54,7 +59,7 @@ export async function PATCH(
     const id = Number(idStr);
 
     if (isNaN(id)) {
-        return NextResponse.json({error: "Invalid ID"}, {status: 400});
+        return withCors(NextResponse.json({error: "Invalid ID"}, {status: 400}));
     }
 
     const data = await req.json();
@@ -64,9 +69,9 @@ export async function PATCH(
             where: {id},
             data: data,
         });
-        return NextResponse.json({message: "Country updated", country: updated});
+        return withCors(NextResponse.json({message: "Country updated", country: updated}));
     } catch (error) {
         console.error(error);
-        return NextResponse.json({error: "Country not found"}, {status: 404})
+        return withCors(NextResponse.json({error: "Country not found"}, {status: 404}));
     }
 }
