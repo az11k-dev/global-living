@@ -1,6 +1,5 @@
 import {Country} from "@/types";
-import {CloudSunRain, FileText, HeartCrack, ShieldHalf, Sun, PersonStanding, Globe, MapPinned} from "lucide-react";
-import flag from "@/public/images/uzb.png"
+import {CloudSunRain, ShieldHalf, Globe, MapPinned} from "lucide-react";
 import Image from "next/image";
 import React from "react";
 

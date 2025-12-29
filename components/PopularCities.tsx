@@ -13,20 +13,12 @@ type CountryProps = {
 
 export default function PopularCities({country}: CountryProps) {
     const {
-        getActiveFilter,
-        handleFilterChange,
-        handleClearAllFilters,
         currentQueryString
     } = useCountryFilters();
-
     const [cities, setCities] = useState<City[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [totalCities, setTotalCities] = useState(0);
-
-    // 3. Функция загрузки данных (зависит только от currentQueryString)
     const fetchCities = useCallback(async () => {
         setIsLoading(true);
-        // Запрос к API с текущими параметрами фильтрации
         const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
         const url = `${BASE_URL}/api/cities?country=${country.name}`;
         try {
@@ -35,12 +27,10 @@ export default function PopularCities({country}: CountryProps) {
             const data = await res.json();
             // В зависимости от того, как настроен ваш бэкенд:
             setCities(data.cities || data); // Если API возвращает { Cities: [...], total: N }
-            setTotalCities(data.total || data.length); // Используем длину массива как запасной вариант
 
         } catch (error) {
             console.error("Error fetching Cities:", error);
             setCities([]);
-            setTotalCities(0);
         } finally {
             setIsLoading(false);
         }
@@ -52,6 +42,12 @@ export default function PopularCities({country}: CountryProps) {
         // Принудительно прокручиваем вверх при загрузке новых данных (хороший UX)
         window.scrollTo({top: 0, behavior: 'smooth'});
     }, [fetchCities]);
+    if (isLoading) {
+        return <div className="p-10 text-center min-h-[300px] flex items-center justify-center">Loading...</div>;
+    }
+    if (!cities) {
+        return <div className="p-10 text-center text-red-600">Oops! No results found.</div>;
+    }
     return (
         <div>
             <div>

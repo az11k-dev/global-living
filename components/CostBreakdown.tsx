@@ -4,9 +4,14 @@ type CountryProps = {
     country: Country;
 }
 
+type Expense = {
+    name: string;
+    value: number | undefined;
+    color: string;
+}
 
 export default function CostBreakdown({country}: CountryProps) {
-    const expenseData = [
+    const expenseData: Expense[] = [
         {name: 'Rent', value: country?.costs?.rent, color: '#4c6ef5'},
         {name: 'Food', value: country?.costs?.food, color: '#40c057'},
         {name: 'Transport', value: country?.costs?.transport, color: '#fab005'},
@@ -14,7 +19,7 @@ export default function CostBreakdown({country}: CountryProps) {
         {name: 'Utilities', value: country?.costs?.utilities, color: '#f03e3e'},
     ];
 
-    const totalMonthly = expenseData.reduce((sum, item) => sum + item.value, 0);
+    const totalMonthly = expenseData.reduce((sum, item) => sum + (item?.value ? item.value : 0), 0);
     return (
         <div className="w-full lg:w-1/2 p-6">
             <h2 className="text-[18px] font-[500] text-gray-800 mb-6">Cost Breakdown</h2>
@@ -22,7 +27,7 @@ export default function CostBreakdown({country}: CountryProps) {
             <div className="space-y-4">
                 {expenseData.map((item, index) => {
 
-                    const percentage = Math.round((item.value / totalMonthly) * 100);
+                    const percentage = Math.round(((item?.value ? item.value : 0) / totalMonthly) * 100);
 
                     return (
                         <div key={index} className="flex flex-col">
