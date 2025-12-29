@@ -27,7 +27,8 @@ const navItems = [
 
 export default function Navbar() {
     return (
-        <nav className="h-20 w-full flex items-center justify-between px-24 fixed z-999 bg-white border-b border-gray-200">
+        <nav
+            className="h-20 w-full flex items-center justify-between px-24 fixed z-999 bg-white border-b border-gray-200">
             {/* Logo */}
             <div className="flex items-center gap-2">
                 <Link href={"/"}>
@@ -69,10 +70,11 @@ export default function Navbar() {
 
                 <User className="cursor-pointer text-gray-500"/>
 
-                <button
-                    className="text-white rounded-3xl bg-blue-500 px-5 py-2 hover:bg-blue-600 transition cursor-pointer">
+                <Link
+                    className="text-white rounded-3xl bg-blue-500 px-5 py-2 hover:bg-blue-600 transition cursor-pointer"
+                    href={"/signup"}>
                     Sign Up
-                </button>
+                </Link>
             </div>
         </nav>
     );

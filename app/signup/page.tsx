@@ -6,12 +6,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {User, Mail, Lock, Globe, CheckCheck} from 'lucide-react';
 import {Github, Google} from "@/assets";
+import {useRouter} from "next/navigation";
 
 export default function SignUpPage() {
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
     const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
     const fetchUp = useCallback(async () => {
         try {
@@ -33,6 +35,7 @@ export default function SignUpPage() {
 
             const data = await response.json();
             console.log("SERVER RESPONSE:", data);
+            router.push("/login")
 
         } catch (error) {
             console.error("LOGIN ERROR:", error);
