@@ -15,6 +15,9 @@ export type City = {
     countryId: number;
     rating: number;
     image: string;
+    lat: number;
+    lng: number;
+    internetSpeed: string;
     population: number;
     temperature: number;
     timezone: string;

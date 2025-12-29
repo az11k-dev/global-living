@@ -1,9 +1,8 @@
 import type {Metadata} from "next";
 import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import {Analytics} from "@vercel/analytics/next"
+import {Analytics} from "@vercel/analytics/next";
+import LayoutContent from "@/app/LayoutContext";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -27,14 +26,11 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-        <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-        <Navbar/>
-        <div className={"pt-20"}>
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {/* Вся логика скрытия теперь внутри LayoutContent */}
+        <LayoutContent>
             {children}
-        </div>
-        <Footer/>
+        </LayoutContent>
         <Analytics/>
         </body>
         </html>

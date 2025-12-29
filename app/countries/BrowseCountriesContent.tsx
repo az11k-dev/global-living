@@ -60,6 +60,9 @@ export default function BrowseCountriesContent() {
 
 
     // --- Рендеринг ---
+
+
+
     return (
         <div className="min-h-screen bg-white font-sans text-gray-800">
 
