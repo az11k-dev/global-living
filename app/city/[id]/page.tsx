@@ -1,14 +1,22 @@
 'use client';
 
 import {useParams} from "next/navigation";
+import dynamic from 'next/dynamic';
 import {useCountryFilters} from "@/hooks/useCountryFilters";
 import {useCallback, useEffect, useState} from "react";
 import {City} from "@/types";
 import CityOverview from "@/components/CityOverview";
 import CostLivingCity from "@/components/CostLivingCity";
+import SimilarCities from "@/components/SimilarCities";
+import TopReviews from "@/components/TopReviews";
+import AIsummaryInsights from "@/components/AIsummaryInsights";
+
+const InteractiveMap = dynamic(() => import('@/components/InteractiveMap'), {
+    ssr: false,
+});
 
 export default function CityPage() {
-    const parms = useParams<{ ID: string }>();
+    const parms = useParams();
     const cityId = parms.id;
     const {
         currentQueryString
@@ -46,7 +54,11 @@ export default function CityPage() {
     return (
         <div key={city.id} className={"px-[100px] py-[40px] bg-gray-100 min-h-screen"}>
             <CityOverview city={city}/>
-            <CostLivingCity  city={city}/>
+            <CostLivingCity city={city}/>
+            <InteractiveMap city={city}/>
+            <AIsummaryInsights/>
+            <SimilarCities />
+            <TopReviews/>
         </div>
     )
 }

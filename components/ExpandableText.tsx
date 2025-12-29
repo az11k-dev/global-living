@@ -22,7 +22,7 @@ export const ExpandableText: React.FC<ExpandableTextProps> = ({text, maxLength =
             </p>
             {isLong && (
                 <h1 onClick={toggleExpand} className={"flex items-center text-[#3B82F6] gap-1 cursor-pointer hover:text-blue-600 transition py-[20px]"}>
-                    {isExpanded ? 'Read more' : 'Read more'}
+                    {isExpanded ? 'Read Less' : 'Read more'}
                     <ArrowRight size={18} style={{
                         transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
                         transition: 'transform 0.3s'

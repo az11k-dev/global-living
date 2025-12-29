@@ -2,7 +2,7 @@ import Image from "next/image";
 import ai from "@/public/images/Ai.png"
 import ai2 from "@/public/images/ai2.png"
 import React from "react";
-import {ArrowRight, Lightbulb, Check, X} from "lucide-react";
+import {ArrowRight, Lightbulb, Check, X, Bot} from "lucide-react";
 import flag from "@/public/images/uzb.png"
 import Link from "next/link";
 
@@ -34,7 +34,9 @@ export default function AIsummary() {
         <div className={"py-[30px] flex  justify-between gap-10"}>
             <div className={"bg-blue-100 p-[30px] rounded-xl border-1 border-blue-300"}>
                 <div className={"flex items-center gap-3"}>
-                    <Image src={ai} alt={"ai"} width={50} className={"rounded-xl"}/>
+                    <div className="p-4 bg-[#5d5cf0] rounded-xl">
+                        <Bot className="w-6 h-6 text-white" />
+                    </div>
                     <h1 className={"text-[20px] font-[700]"}>
                         AI Summary
                     </h1>

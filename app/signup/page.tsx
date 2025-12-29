@@ -17,16 +17,17 @@ export default function SignUpPage() {
         try {
             setLoading(true);
 
-            const response = await fetch(`${BASE_URL}/api/login`, {
+            const response = await fetch(`${BASE_URL}/api/user/signup`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 mode: "no-cors",
                 body: JSON.stringify({
+                    name: fullName,
                     email: email,
                     password: password,
-                    fullName: fullName,
+
                 }),
             });
 
@@ -54,11 +55,13 @@ export default function SignUpPage() {
             </div>
             <div className="relative z-10 w-full">
                 <div className="sm:mx-auto sm:w-full sm:max-w-[520px]  px-4">
-                    <div className="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden  transform transition-all duration-300 hover:scale-[1.01]">
+                    <div
+                        className="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden  transform transition-all duration-300 hover:scale-[1.01]">
                         <div className="px-6 py-5 sm:px-10">
                             <div className="mb-8 text-center">
                                 <div className="sm:mx-auto sm:w-full sm:max-w-md text-center mb-2">
-                                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 mb-4 shadow-lg">
+                                    <div
+                                        className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 mb-4 shadow-lg">
                                         <Globe className="w-6 h-6 text-white"/>
                                     </div>
                                     <h2 className="text-3xl font-bold tracking-tight text-white drop-shadow-md">GlobalLiving</h2>
@@ -108,6 +111,7 @@ export default function SignUpPage() {
                                                 className="w-5 h-5 text-slate-400 group-focus-within:text-white transition-colors"/>
                                         </div>
                                         <input
+                                            onChange={(e) => setPassword(e.target.value)}
                                             type="password"
                                             placeholder="Password"
                                             className="block w-full pl-11 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/30 focus:bg-white/10 transition-all duration-200 sm:text-sm"
@@ -143,9 +147,12 @@ export default function SignUpPage() {
                                 </div>
 
                                 {/* Submit */}
-                                <button type="submit"
-                                        className="flex w-full justify-center rounded-xl bg-white px-3 py-3.5 text-sm font-semibold text-gray-600 shadow-sm hover:bg-slate-100 transition-all duration-200 transform hover:scale-[1.01]">
-                                    Create Account
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-navy-950 text-gray-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-white transition-all duration-200 transform hover:-translate-y-0.5 mt-2"
+                                >
+                                    {loading ? "Creating account..." : "Create account"}
                                 </button>
                             </form>
 
