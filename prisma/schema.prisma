@@ -22,6 +22,7 @@ model User {
   provider            String // credentials | google | github etc
   createdAt           DateTime @default(now())
   country             String?
+  position            String?
   City                String?
   interestedCountries Json?
   monthlyBudget       String?
