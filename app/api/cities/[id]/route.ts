@@ -1,6 +1,11 @@
 // app/api/countries/[id]/route.ts
 import {NextRequest, NextResponse} from "next/server";
 import prisma from "@/lib/prisma";
+import {handleOptions, withCors} from "@/lib/cors";
+
+export async function OPTIONS(req: NextRequest) {
+    return handleOptions();
+}
 
 export async function DELETE(
     req: NextRequest,
@@ -21,7 +26,7 @@ export async function DELETE(
         return NextResponse.json({message: "City deleted", city: deletedCity});
     } catch (error) {
         console.error(error);
-        return NextResponse.json({error: "City not found or already deleted"}, {status: 404});
+        return withCors(NextResponse.json({error: "City not found or already deleted"}, {status: 404}));
     }
 }
 
@@ -43,7 +48,7 @@ export async function GET(
             country: true,
         },
     });
-    return NextResponse.json(city);
+    return withCors(NextResponse.json(city));
 }
 
 export async function PATCH(
@@ -67,6 +72,6 @@ export async function PATCH(
         return NextResponse.json({message: "City updated", city: updated});
     } catch (error) {
         console.error(error);
-        return NextResponse.json({error: "City not found"}, {status: 404})
+        return withCors(NextResponse.json({error: "City not found"}, {status: 404}))
     }
 }

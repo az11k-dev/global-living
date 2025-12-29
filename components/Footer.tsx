@@ -28,10 +28,10 @@ const Footer = () => {
                     <div>
                         <h3 className="font-semibold text-gray-900 mb-4">Discover</h3>
                         <ul className="space-y-3">
-                            <li><Link href="#"
+                            <li><Link href="/countries"
                                       className="text-gray-500 hover:text-blue-600 transition-colors">Countries</Link>
                             </li>
-                            <li><Link href="#"
+                            <li><Link href="/cities"
                                       className="text-gray-500 hover:text-blue-600 transition-colors">Cities</Link></li>
                             <li><Link href="#"
                                       className="text-gray-500 hover:text-blue-600 transition-colors">Rankings</Link>
