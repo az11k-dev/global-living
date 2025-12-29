@@ -31,7 +31,7 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
 
     const {name} = await req.json();
     const user = await prisma.user.update({where: {id: userId}, data: {name}});
-    return NextResponse.json({id: user.id, email: user.email, name: user.name, image: user.image});
+    return NextResponse.json(user);
 }
 
 export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {

@@ -14,13 +14,17 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String?
-  name      String?
-  image     String?
-  provider  String // credentials | google | github etc
-  createdAt DateTime @default(now())
+  id                  Int      @id @default(autoincrement())
+  email               String   @unique
+  password            String?
+  name                String?
+  image               String?
+  provider            String // credentials | google | github etc
+  createdAt           DateTime @default(now())
+  country             String?
+  City                String?
+  interestedCountries Json?
+  monthlyBudget       String?
 
   reviews Review[]
 }
@@ -71,8 +75,8 @@ model City {
   temperature   Int
   timezone      String
   internetSpeed String?
-  lat Float?
-  lng Float?
+  lat           Float?
+  lng           Float?
 
   costs     Costs?
   totalCost Int      @default(0)
