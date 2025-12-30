@@ -23,7 +23,7 @@ model User {
   createdAt           DateTime @default(now())
   country             String?
   position            String?
-  City                String?
+  city                String?
   interestedCountries Json?
   monthlyBudget       String?
 
