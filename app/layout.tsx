@@ -3,7 +3,7 @@ import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.css";
 import {Analytics} from "@vercel/analytics/next";
 import LayoutContent from "@/app/LayoutContext";
-
+import { AuthProvider } from "@/context/AuthContext";
 const geistSans = Geist({
     variable: "--font-geist-sans",
     subsets: ["latin"],
@@ -27,10 +27,11 @@ export default function RootLayout({
     return (
         <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {/* Вся логика скрытия теперь внутри LayoutContent */}
-        <LayoutContent>
-            {children}
-        </LayoutContent>
+        <AuthProvider>
+            <LayoutContent>
+                {children}
+            </LayoutContent>
+        </AuthProvider>
         <Analytics/>
         </body>
         </html>

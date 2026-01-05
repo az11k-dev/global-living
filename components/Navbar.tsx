@@ -1,6 +1,10 @@
+"use client"
+
 import Image from "next/image";
 import {Search, User} from "lucide-react";
 import Link from "next/link";
+import {useAuth} from "@/context/AuthContext";
+import {useRouter} from "next/navigation";
 
 const navItems = [
     {
@@ -26,10 +30,12 @@ const navItems = [
 ]
 
 export default function Navbar() {
+
+    const {isLoggedIn, token} = useAuth();
+    const router = useRouter();
     return (
         <nav
             className="h-20 w-full flex items-center justify-between px-24 fixed z-999 bg-white border-b border-gray-200">
-            {/* Logo */}
             <div className="flex items-center gap-2">
                 <Link href={"/"}>
                     <Image
@@ -45,7 +51,7 @@ export default function Navbar() {
                 </h1>
             </div>
 
-            {/* Navigation */}
+
             <div className="flex items-center gap-5 text-base text-gray-500 font-medium">
                 {navItems.map(item => (
                     <Link href={item?.link}
@@ -57,7 +63,7 @@ export default function Navbar() {
                 ))}
             </div>
 
-            {/* Actions */}
+
             <div className="flex items-center gap-5">
                 <div className="bg-gray-50 h-10 border border-gray-200 rounded-3xl px-3 flex items-center">
                     <Search size={20} className="text-gray-500"/>
@@ -67,15 +73,21 @@ export default function Navbar() {
                         type="text"
                     />
                 </div>
-
-                <User className="cursor-pointer text-gray-500"/>
-
-                <Link
-                    className="text-white rounded-3xl bg-blue-500 px-5 py-2 hover:bg-blue-600 transition cursor-pointer"
-                    href={"/signup"}>
-                    Sign Up
-                </Link>
+                <div onClick={() => {
+                    router.push("/profile");
+                }} className={'flex items-center gap-4'}>
+                    <User className="cursor-pointer text-gray-500"/>
+                </div>
+                {
+                    !isLoggedIn && (
+                        <Link
+                            className="text-white rounded-3xl bg-blue-500 px-5 py-2 hover:bg-blue-600 transition cursor-pointer"
+                            href={"/signup"}>
+                            Sign Up
+                        </Link>
+                    )}
             </div>
         </nav>
-    );
+    )
+        ;
 }

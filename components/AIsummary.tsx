@@ -1,5 +1,4 @@
 import Image from "next/image";
-import ai from "@/public/images/Ai.png"
 import ai2 from "@/public/images/ai2.png"
 import React from "react";
 import {ArrowRight, Lightbulb, Check, X, Bot} from "lucide-react";
@@ -35,7 +34,7 @@ export default function AIsummary() {
             <div className={"bg-blue-100 p-[30px] rounded-xl border-1 border-blue-300"}>
                 <div className={"flex items-center gap-3"}>
                     <div className="p-4 bg-[#5d5cf0] rounded-xl">
-                        <Bot className="w-6 h-6 text-white" />
+                        <Bot className="w-6 h-6 text-white"/>
                     </div>
                     <h1 className={"text-[20px] font-[700]"}>
                         AI Summary
@@ -77,7 +76,6 @@ export default function AIsummary() {
                     <h1 className={"text-[30px] text-blue-600 font-[600]"}>$1,150 - $1,180</h1>
                 </div>
             </div>
-
             <div className={"bg-purple-100 p-[30px] rounded-xl border-1 border-purple-300"}>
                 <div className={"flex items-center gap-3"}>
                     <Image src={ai2} alt={"ai2"} width={50} className={"rounded-xl"}/>
@@ -104,7 +102,7 @@ export default function AIsummary() {
                     ))}
                 </div>
                 <div
-                    className={"flex flex-col gap-3 border-1 border-purple-300 bg-white rounded-xl mt-[30px] px-[20px] py-[40px]"}>
+                    className={"flex flex-col gap-3 border-1 border-purple-300 bg-white rounded-xl mt-[30px] px-[20px] py-[20px]"}>
                     <div className="flex items-center gap-2 ">
                         <Lightbulb color="purple" strokeWidth={3}/>
                         <h1 className={"text-[18px] font-[600]"}>Cusstom Comparison</h1>

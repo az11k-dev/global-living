@@ -18,7 +18,6 @@ export default function SignUpPage() {
     const fetchUp = useCallback(async () => {
         try {
             setLoading(true);
-
             const response = await fetch(`${BASE_URL}/api/user/signup`, {
                 method: "POST",
                 headers: {

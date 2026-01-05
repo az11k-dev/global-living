@@ -15,11 +15,11 @@ type CountryProps = {
 }
 export default function MonthlyExpensesChart({ country }: CountryProps) {
     const expenseData = [
-        { name: "Rent", value: country?.costs?.rent, color: "#4c6ef5" },
-        { name: "Food", value: country?.costs?.food, color: "#40c057" },
-        { name: "Transport", value: country?.costs?.transport, color: "#fab005" },
-        { name: "Internet", value: country?.costs?.internet, color: "#9c36b5" },
-        { name: "Utilities", value: country?.costs?.utilities, color: "#f03e3e" },
+        { name: "Rent", value: country?.costs?.rent, color: "#629BF8" },
+        { name: "Food", value: country?.costs?.food, color: "#4ED17E" },
+        { name: "Transport", value: country?.costs?.transport, color: "#EEC239" },
+        { name: "Internet", value: country?.costs?.internet, color: "#B977F9" },
+        { name: "Utilities", value: country?.costs?.utilities, color: "#F26969" },
     ];
 
     return (

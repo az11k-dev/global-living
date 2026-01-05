@@ -4,7 +4,6 @@ import { useCallback, useEffect, useState } from "react";
 import { City } from "@/types";
 import { useCountryFilters } from "@/hooks/useCountryFilters";
 
-// Создадим отдельный мини-компонент для загрузки (Skeleton)
 const SkeletonRow = () => (
     <div className="flex items-center justify-between py-4 animate-pulse border-b border-gray-50">
         <div className="flex items-center gap-4">
@@ -24,7 +23,6 @@ const SkeletonRow = () => (
 
 export default function SimilarCities() {
     const { currentQueryString } = useCountryFilters();
-    // Исправлено: ожидаем массив городов
     const [cities, setCities] = useState<City[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -37,7 +35,6 @@ export default function SimilarCities() {
             const response = await fetch(url, { cache: "no-cache" });
             if (!response.ok) throw new Error("Could not fetch cities");
             const data = await response.json();
-            // Проверяем, что пришел массив
             setCities(Array.isArray(data) ? data : []);
         } catch (error) {
             setCities([]);
@@ -54,7 +51,6 @@ export default function SimilarCities() {
 
     return (
         <div className="p-6 bg-white flex flex-col gap-6 w-full rounded-2xl shadow-sm border border-gray-100">
-            {/* Шапка */}
             <div className="flex items-center justify-between">
                 <h2 className="text-xl font-bold text-gray-800">
                     Compare with Similar Cities
@@ -67,7 +63,6 @@ export default function SimilarCities() {
                 </Link>
             </div>
 
-            {/* Заголовки колонок */}
             <div className="hidden md:flex justify-between px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                 <div className="w-1/3">City</div>
                 <div className="flex flex-1 justify-between ml-10">
@@ -80,15 +75,13 @@ export default function SimilarCities() {
 
             <div className="flex flex-col">
                 {loading ? (
-                    // Показываем 3 строки загрузки
                     [1, 2, 3].map((n) => <SkeletonRow key={n} />)
                 ) : cities.length > 0 ? (
-                    cities.map((city) => (
+                    cities.slice(0, 6).map((city) => (
                         <div
                             key={city.id}
                             className="flex flex-col md:flex-row md:items-center justify-between py-4 border-b border-gray-50 last:border-0 hover:bg-gray-50 transition-colors px-2 rounded-lg"
                         >
-                            {/* Инфо о городе */}
                             <div className="flex items-center gap-4 md:w-1/3">
                                 <div className="relative w-[70px] h-[50px] shrink-0">
                                     <Image
@@ -104,23 +97,19 @@ export default function SimilarCities() {
                                 </div>
                             </div>
 
-                            {/* Метрики */}
                             <div className="flex flex-1 justify-between items-center mt-4 md:mt-0 md:ml-10">
-                <span className="w-20 text-center font-medium text-gray-700">
-                  ${city.totalCost.toLocaleString()}
-                </span>
-
+                                <span className="w-20 text-center font-medium text-gray-700">
+                                  ${city.totalCost.toLocaleString()}
+                                </span>
                                 <span className="w-20 py-1 text-center text-sm font-bold text-green-700 bg-green-100 rounded-full">
-                  {city.rating}
-                </span>
-
+                                  {city.rating}
+                                </span>
                                 <span className="w-20 text-center text-gray-600">
-                  {city.internetSpeed} Mbps
-                </span>
-
+                                  {city.internetSpeed} Mbps
+                                </span>
                                 <span className="w-20 py-1 text-center text-sm font-bold text-blue-700 bg-blue-100 rounded-full">
-                  {city.rating}
-                </span>
+                                  {city.rating}
+                                </span>
                             </div>
                         </div>
                     ))

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import {Mail, Lock, Globe} from 'lucide-react';
 import {Github, Google} from "@/assets";
 import {useRouter} from "next/navigation";
+import {useAuth} from "@/context/AuthContext";
 
 export default function LoginPage() {
 
@@ -15,6 +16,7 @@ export default function LoginPage() {
     const router = useRouter();
     const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
+    const {login, token} = useAuth()
     const fetchLogin = useCallback(async () => {
         try {
             setLoading(true);
@@ -32,20 +34,23 @@ export default function LoginPage() {
             });
 
             const data = await response.json();
+
             console.log("SERVER RESPONSE:", data);
-            router.push("/");
+            if (response.ok) { // Если сервер ответил 200 OK
+                login(data?.user, data?.token); // <--- СОХРАНЯЕМ СОСТОЯНИЕ
+                router.push("/");
+            }
 
         } catch (error) {
             console.error("LOGIN ERROR:", error);
         } finally {
             setLoading(false);
         }
-    }, [email, password]);
+    }, [email, password, login, router]);
 
 
     return (
-        <div
-            className="relative min-h-screen flex items-center justify-center p-4 font-sans text-white antialiased overflow-hidden">
+        <div className="relative min-h-screen flex items-center justify-center p-4 font-sans text-white antialiased overflow-hidden">
             <div className="absolute inset-0 z-0">
                 <Image
                     src={img}
@@ -58,23 +63,18 @@ export default function LoginPage() {
             </div>
 
 
-            <div
-                className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/20 rounded-full blur-[100px] z-0 animate-pulse"></div>
-            <div
-                className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-indigo-600/20 rounded-full blur-[100px] z-0 animate-pulse"
-                style={{animationDelay: '2s'}}></div>
+            <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/20 rounded-full blur-[100px] z-0 animate-pulse"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-indigo-600/20 rounded-full blur-[100px] z-0 animate-pulse" style={{animationDelay: '2s'}}></div>
 
 
             <main className="w-full max-w-md z-10 relative">
 
 
-                <div
-                    className="bg-gray-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-8 md:p-10 w-full shadow-2xl transform transition-all duration-300 hover:scale-[1.01]">
+                <div className="bg-gray-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-8 md:p-10 w-full shadow-2xl transform transition-all duration-300 hover:scale-[1.01]">
 
 
                     <div className="text-center mb-8">
-                        <div
-                            className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-white/10 mb-4 text-white ring-1 ring-white/20">
+                        <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-white/10 mb-4 text-white ring-1 ring-white/20">
                             <Globe className="w-7 h-7"/>
                         </div>
                         <h1 className="text-3xl font-bold tracking-tight text-white mb-2">GlobalLiving</h1>
@@ -83,19 +83,13 @@ export default function LoginPage() {
                     </div>
 
 
-                    <form className="space-y-5" onSubmit={(e) => {
-                        e.preventDefault();
-                        fetchLogin();
-                    }}>
-
-
+                    <form className="space-y-5" onSubmit={(e) => {e.preventDefault();fetchLogin();}}>
                         <div className="space-y-1">
                             <label htmlFor="email" className="block text-sm font-medium text-gray-300 ml-1">Email
                                 Address</label>
                             <div className="relative group">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <Mail
-                                        className="w-5 h-5 text-gray-400 group-focus-within:text-white transition-colors"/>
+                                    <Mail className="w-5 h-5 text-gray-400 group-focus-within:text-white transition-colors"/>
                                 </div>
                                 <input
                                     type="email"
@@ -108,8 +102,6 @@ export default function LoginPage() {
                                 />
                             </div>
                         </div>
-
-
                         <div className="space-y-1">
                             <div className="flex items-center justify-between ml-1">
                                 <label htmlFor="password"
@@ -134,17 +126,9 @@ export default function LoginPage() {
                                 />
                             </div>
                         </div>
-
-
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-navy-950 text-gray-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-white transition-all duration-200 transform hover:-translate-y-0.5 mt-2"
-                        >
+                        <button type="submit" disabled={loading} className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-navy-950 text-gray-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-white transition-all duration-200 transform hover:-translate-y-0.5 mt-2">
                             {loading ? "Signing in..." : "Sign In"}
                         </button>
-
-
                         <div className="relative my-6">
                             <div className="absolute inset-0 flex items-center">
                                 <div className="w-full border-t border-gray-600/50"></div>
@@ -154,6 +138,7 @@ export default function LoginPage() {
                                     className="px-2 bg-transparent text-gray-400 backdrop-blur-sm">Or continue with</span>
                             </div>
                         </div>
+
                         <div className="grid grid-cols-2 gap-3">
                             <button type="button"
                                     className="flex items-center justify-center px-4 py-2.5 border border-gray-600/50 rounded-xl bg-white/5 text-sm font-medium text-white hover:bg-white/10 transition-colors">
@@ -165,13 +150,10 @@ export default function LoginPage() {
                             </button>
                         </div>
                     </form>
-
                     <div className="mt-8 text-center">
                         <p className="text-sm text-gray-400">
                             Don&apos;t have an account?
-                            <Link href="/signup"
-                                  className="font-medium text-white hover:text-blue-300 transition-colors ml-1">Sign
-                                up</Link>
+                            <Link href="/signup" className="font-medium text-white hover:text-blue-300 transition-colors ml-1">Sign up</Link>
                         </p>
                     </div>
                 </div>
