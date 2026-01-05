@@ -10,7 +10,7 @@ export async function GET(_: Request, context: { params: Promise<{ id: string }>
     }
     const reviews = await prisma.review.findMany({
         where: {countryId: id},
-        include: {user: {select: {id: true, name: true}}},
+        include: {user: {select: {id: true, name: true, image: true, position: true}}},
         orderBy: {createdAt: "desc"},
     });
 
