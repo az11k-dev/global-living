@@ -56,7 +56,7 @@ export default function CityPage() {
             <CityOverview city={city}/>
             <CostLivingCity city={city}/>
             <InteractiveMap city={city}/>
-            <AIsummaryInsights/>
+            <AIsummaryInsights query={city.name}/>
             <SimilarCities />
             <TopReviews/>
         </div>

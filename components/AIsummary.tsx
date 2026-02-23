@@ -1,9 +1,10 @@
 import Image from "next/image";
 import ai2 from "@/public/images/ai2.png"
 import React from "react";
-import {ArrowRight, Lightbulb, Check, X, Bot} from "lucide-react";
+import { ArrowRight, Lightbulb, Check, X, Bot } from "lucide-react";
 import flag from "@/public/images/uzb.png"
 import Link from "next/link";
+import ReactMarkdown from "react-markdown";
 
 const data = [
     {
@@ -28,43 +29,78 @@ const data = [
         unTxt: " Lorem ipsum is placeholder text3",
     }
 ]
-export default function AIsummary() {
+interface Props {
+    query: string;
+}
+
+export default function AIsummary({ query }: Props) {
+    const [loading, setLoading] = React.useState(false);
+    const [aiResponse, setAiResponse] = React.useState<string | null>(null);
+
+    React.useEffect(() => {
+        const fetchSummary = async () => {
+            if (!query) return;
+
+            const cacheKey = `ai-summary-${query}`;
+            const cachedData = localStorage.getItem(cacheKey);
+
+            if (cachedData) {
+                setAiResponse(cachedData);
+                return;
+            }
+
+            setLoading(true);
+            setAiResponse(null);
+
+            try {
+                const response = await fetch("/api/ai", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ text: query }),
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to fetch AI summary");
+                }
+
+                const data = await response.json();
+                setAiResponse(data);
+                localStorage.setItem(cacheKey, data);
+            } catch (error) {
+                console.error("Error generating summary:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchSummary();
+    }, [query]);
+
     return (
         <div className={"py-[30px] flex  justify-between gap-10"}>
             <div className={"bg-blue-100 p-[30px] rounded-xl border-1 border-blue-300"}>
                 <div className={"flex items-center gap-3"}>
                     <div className="p-4 bg-[#5d5cf0] rounded-xl">
-                        <Bot className="w-6 h-6 text-white"/>
+                        <Bot className="w-6 h-6 text-white" />
                     </div>
                     <h1 className={"text-[20px] font-[700]"}>
-                        AI Summary
+                        AI Summary for {query}
                     </h1>
                 </div>
-                <div className={"mb-[20px] flex flex-col gap-3 text-gray-600"}>
-                    <h1 className={"text-[18px] font-[700] text-black mt-[20px]"}>
-                        Best For:
-                    </h1>
-                    <h1>
-                        Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries
-                        for previewing layouts and visual mockups.
-                    </h1>
-                    <h1 className={"text-[18px] font-[700] text-black mt-[20px]"}>Pros:</h1>
-                    {data.map((item, index) => (
-                        <div key={index}>
-                            <h1 className={"flex items-center gap-3"}>
-                                <Check color="green"/>
-                                {item.txt}
-                            </h1>
-                        </div>
-                    ))}
 
-                    <h1 className={"text-[18px] font-[700] text-black mt-[20px]"}>Cons:</h1>
-                    {data.map((item, index) => (
-                        <div key={index}>
-                            <h1 className={"flex items-center gap-3"}>
-                                <X color="red"/>
-                                {item.unTxt}
-                            </h1>
+                <div className={"mb-[20px] flex flex-col gap-3 text-gray-600 mt-5"}>
+                    {loading && (
+                        <div className="text-center py-10">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+                            <p className="mt-2 text-gray-500">Generating comprehensive summary for {query}...</p>
+                        </div>
+                    )}
+
+                    {!loading && aiResponse && (
+                        <div className="prose prose-blue max-w-none">
+                            <ReactMarkdown>{aiResponse}</ReactMarkdown>
                         </div>
                     ))}
 
@@ -76,9 +112,10 @@ export default function AIsummary() {
                     <h1 className={"text-[30px] text-blue-600 font-[600]"}>$1,150 - $1,180</h1>
                 </div>
             </div>
+
             <div className={"bg-purple-100 p-[30px] rounded-xl border-1 border-purple-300"}>
                 <div className={"flex items-center gap-3"}>
-                    <Image src={ai2} alt={"ai2"} width={50} className={"rounded-xl"}/>
+                    <Image src={ai2} alt={"ai2"} width={50} className={"rounded-xl"} />
                     <h1 className={"text-[20px] font-[700]"}>
                         Compare Countries
                     </h1>
@@ -90,21 +127,21 @@ export default function AIsummary() {
                     </h1>
                     {data.map((item, index) => (
                         <div key={index}
-                             className={"flex items-center justify-between gap-4 border-1 mt-[10px]  p-[30px] border-gray-300 bg-white rounded-xl"}>
+                            className={"flex items-center justify-between gap-4 border-1 mt-[10px]  p-[30px] border-gray-300 bg-white rounded-xl"}>
                             <div className={"flex items-center gap-3"}>
-                                <Image src={item.image} alt={"flag"} width={50} className={""}/>
+                                <Image src={item.image} alt={"flag"} width={50} className={""} />
                                 <h1 className={"text-[18px] font-[600]"}>Compare with {item.countryName}</h1>
                             </div>
                             <Link href="/">
-                                <ArrowRight className={"text-[18px] font-[600] text-gray-400"}/>
+                                <ArrowRight className={"text-[18px] font-[600] text-gray-400"} />
                             </Link>
                         </div>
                     ))}
                 </div>
                 <div
-                    className={"flex flex-col gap-3 border-1 border-purple-300 bg-white rounded-xl mt-[30px] px-[20px] py-[20px]"}>
+                    className={"flex flex-col gap-3 border-1 border-purple-300 bg-white rounded-xl mt-[30px] px-[20px] py-[40px]"}>
                     <div className="flex items-center gap-2 ">
-                        <Lightbulb color="purple" strokeWidth={3}/>
+                        <Lightbulb color="purple" strokeWidth={3} />
                         <h1 className={"text-[18px] font-[600]"}>Cusstom Comparison</h1>
                     </div>
 

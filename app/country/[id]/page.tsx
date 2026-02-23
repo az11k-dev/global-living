@@ -53,7 +53,7 @@ export default function CountryPage() {
                 <AggregetedPrice country={country}/>
                 <PopularCities country={country}/>
                 <TopReviews/>
-                <AIsummary/>
+                <AIsummary query={country.name}/>
             </div>
         </Suspense>
     )
