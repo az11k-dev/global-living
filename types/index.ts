@@ -50,4 +50,8 @@ export type User = {
     provider: string | null;
     image: string | StaticImport;
     created_At: string;
+    city: string;
+    country: string;
+    monthlyBudget: string;
+    interestedCountries: Array<string> | null;
 } | null;

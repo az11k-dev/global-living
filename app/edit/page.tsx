@@ -5,23 +5,26 @@ import {useCallback, useEffect, useState} from "react";
 import {User} from "@/types";
 import Image from "next/image";
 import {Camera, Check} from "lucide-react";
+import {useRouter} from "next/navigation";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+const token = localStorage.getItem("token");
 
 export default function EditPage() {
-
-    const [position, setPosition] = useState<string>("option1");
-    const [cheked, setCheked] = useState<boolean>(false);
-    const [cheked2, setCheked2] = useState<boolean>(false);
-    const [image, setImage] = useState<string | null>(null)
+    const router = useRouter();
+    const [file ,setFile]=useState<File | null >(null)
+    const [position, setPosition] = useState<string>("");
+    const [star, setStar] = useState<string>("Student");
+    const [checked, setChecked] = useState<boolean>(false);
+    const [checked2, setChecked2] = useState<boolean>(false);
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState('');
+    const [name, setName] = useState(user?.name || "");
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('UZ');
     const [monthlyBudget, setMonthlyBudget] = useState('');
-    const [interestedCountries, setInterestedCountries] = useState([]);
+    const [interestedCountries, setInterestedCountries] = useState("");
+
 
     const countries = Country.getAllCountries();
     const cities = City.getCitiesOfCountry(country);
@@ -47,27 +50,40 @@ export default function EditPage() {
         fetchUser();
         window.scrollTo({top: 0, behavior: 'smooth'});
     }, [fetchUser]);
+
     const fetchEdit = useCallback(async () => {
         try {
             setIsLoading(true);
-            const response = await fetch(`${BASE_URL}/api/user/me`, {
+            if (!file) return;
+            const formData = new FormData();
+            formData.append("image", file);
+            formData.append("name", name);
+            const response = await fetch(`${BASE_URL}/api/user/8`, {
                 method: "PATCH",
-                headers: {"Content-Type": "application/json"},
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
                 body: JSON.stringify({
-                    email: user?.email,
-                    Uname: user?.name,
-                    city: user?.city,
-                    country: user?.country,
-                    monthlyBudget: user?.monthlyBudget,
-                    interestedCountries: user?.interestedCountries
+                    name: name,
+                    city: city,
+                    country: country,
+                    monthlyBudget: monthlyBudget,
+                    interestedCountries: interestedCountries,
+                    position: position,
+
                 }),
+
             })
+            router.push("/profile");
+            return response.json();
         } catch (error) {
             console.error(`Error fetching edit: ${error}`);
         } finally {
             setIsLoading(false);
         }
-    }, [])
+
+    }, [name, city, country, monthlyBudget, interestedCountries, position ])
     if (isLoading) {
         return <div className="p-10 text-center min-h-screen flex items-center justify-center">Loading.</div>;
     }
@@ -82,30 +98,34 @@ export default function EditPage() {
                 <h1 className={"text-[30px] font-[600]"}>Edit Profile</h1>
                 <h1 className={"text-[17px] text-gray-600"}>Update your personal information and preferences </h1>
             </div>
-            <div
-                className={" bg-gradient-to-r from-blue-50 to-green-50  rounded-xl  shadow-sm overflow-hidden border border-gray-100 pt-[20px]"}>
-                <div className={"flex justify-center "}>
-                    <div className={'flex flex-col gap-4 '}>
-                        <div className={'relative'}>
-                            <Image src={user?.image} alt={user?.name} width={140} height={10}
-                                   className={"rounded-full"}/>
-                            <button
-                                className={'cursor-pointer absolute bottom-0 right-0 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center text-blue-600 hover:bg-blue-50 transition-colors border-2 boder-white'}>
-                                <Camera/>
-                            </button>
+            <form onSubmit={(e) => {
+                e.preventDefault();
+                fetchEdit()
+            }}>
+                <div
+                    className={" bg-gradient-to-r from-blue-50 to-green-50  rounded-xl  shadow-sm overflow-hidden border border-gray-100 pt-[20px]"}>
+                    <div className={"flex justify-center "}>
+                        <div className={'flex flex-col gap-4 '}>
+                            <div className={'relative'}>
+                                <Image src={user?.image} alt={user?.name} width={140} height={10}
+                                       className={"rounded-full"}/>
+                                <label
+                                    className={'cursor-pointer absolute bottom-0 right-0 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center text-blue-600 hover:bg-blue-50 transition-colors border-2 boder-white'}>
+                                    <Camera/>
+                                </label>
+                            </div>
+                            <label
+                                className={"text-center cursor-pointer text-[#2563EB] font-[600] bg-white rounded-xl  shadow-sm overflow-hidden border border-gray-100 p-[10px]"}>
+                                Change Photo
+                                <input
+                                    type="file"
+                                    accept={"image/*"}
+                                    onChange={(e)=>setFile(e.target.files?.[0] || null)}
+                                    className={'hidden'}/>
+                            </label>
+                            <h1 className={'text-center text-[20px] font-[600]'}>{user?.name}</h1>
                         </div>
-
-                        <button
-                            className={"cursor-pointer text-[#2563EB] font-[600] bg-white rounded-xl  shadow-sm overflow-hidden border border-gray-100 p-[10px]"}>
-                            Change Photo
-                        </button>
-                        <h1 className={'text-center text-[20px] font-[600]'}>{user?.name}</h1>
                     </div>
-                </div>
-                <form onSubmit={(e) => {
-                    e.preventDefault();
-                    fetchEdit()
-                }}>
                     <div className={'bg-white mt-[10px] p-[20px]'}>
                         <h1 className={' text-[20px] font-[600]'}>Personal Information</h1>
                         <div className={'py-[10px] border-b border-gray-200'}></div>
@@ -128,13 +148,11 @@ export default function EditPage() {
                                 </div>
                                 <h1 className={'text-[12px] text-gray-600 mt-[5px]'}>Email cannot be changed</h1>
                             </div>
-
-
-
                             <div>
                                 <div className={'flex flex-col gap-2 py-[10px]'}>
                                     <label htmlFor="name">Country</label>
-                                    <select value={country} onChange={(e) => setCountry(e.target.value)} className="border-1 border-gray-400 p-[10px] rounded-xl mt-[5px]">
+                                    <select value={country} onChange={(e) => setCountry(e.target.value)}
+                                            className="border-1 border-gray-400 p-[10px] rounded-xl mt-[5px]">
                                         {countries.map((c) => (
                                             <option key={c.isoCode} value={c.isoCode}>
                                                 {c.name}
@@ -155,15 +173,18 @@ export default function EditPage() {
                                     </select>
                                 </div>
                             </div>
-
-
-
                             <div>
                                 <label htmlFor="name">User Type</label>
                                 <label
-                                    className={`cursor-pointer mt-[20px] flex items-center gap-4  p-[10px] rounded-xl ${position === "option1" ? "bg-[#EFF6FF] border-2 border-[#3B82F6]" : "bg-white border-1 border-gray-400"} `}>
-                                    <input type="radio" name={'userType'} value={'option1'} className={'w-5 h-5'}
-                                           onChange={(e) => setPosition(e.target.value && "option1")} checked={position === "option1"}
+                                    className={`cursor-pointer mt-[20px] flex items-center gap-4  p-[10px] rounded-xl ${star === "Student" ? "bg-[#EFF6FF] border-2 border-[#3B82F6]" : "bg-white border-1 border-gray-400"} `}>
+                                    <input type="radio" name={'userType'} value={'Student'} className={'w-5 h-5'}
+                                           onChange={(e) => {
+                                               setStar("Student");
+                                               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                               // @ts-expect-error
+                                               setPosition(e.target.value);
+                                           }}
+                                           checked={star === "Student"}
 
                                     />
                                     <div>
@@ -174,10 +195,17 @@ export default function EditPage() {
                             </div>
                             <div>
                                 <label
-                                    className={`cursor-pointer mt-[45px] flex items-center gap-4  p-[10px] rounded-xl ${position === "option2" ? "bg-[#EFF6FF]  border-2 border-[#3B82F6]" : "bg-white border-1 border-gray-400"}`}>
-                                    <input type="radio" name={'userType'} value={'option2'}
-                                           checked={position === "option2"}
-                                           onChange={(e) => setPosition(e.target.value && "option2")}
+                                    className={`cursor-pointer mt-[45px] flex items-center gap-4  p-[10px] rounded-xl ${star === "Worker" ? "bg-[#EFF6FF]  border-2 border-[#3B82F6]" : "bg-white border-1 border-gray-400"}`}>
+                                    <input type="radio" name={'userType'} value={'Worker'}
+                                           checked={star === "Worker"}
+                                           onChange={(e) => {
+                                               setStar("Worker");
+                                               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                               // @ts-expect-error
+
+
+                                               setPosition(e.target.value);
+                                           }}
                                            className={'w-5 h-5'}/>
                                     <div>
                                         <h1 className={'text-[18px] font-600'}>Worker</h1>
@@ -193,28 +221,36 @@ export default function EditPage() {
                                 <h1 className={'text-[#374151] font-[600]'}>Interested Countries</h1>
                                 <div className={'grid grid-cols-3 gap-4 py-[10px]'}>
                                     <label
-                                        className={`cursor-pointer flex items-center gap-4    p-[10px] rounded-xl ${cheked ? "bg-[#EFF6FF] border-2 border-[#3B82F6]" : "bg-white border-1 border-gray-400"}`}>
+                                        className={`cursor-pointer flex items-center gap-4    p-[10px] rounded-xl ${checked ? "bg-[#EFF6FF] border-2 border-[#3B82F6]" : "bg-white border-1 border-gray-400"}`}>
                                         <input type={"checkbox"} name={'userType'} className={'w-4 h-4'}
-                                               checked={cheked}
-                                               onChange={(e) => setCheked(!cheked) && setInterestedCountries(e.target.checked) }/>
+                                               checked={checked}
+                                               onChange={(e) => {
+                                                   setChecked(!checked);
+                                                   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                                   // @ts-expect-error
+                                                   setInterestedCountries(e.target.checked);
+                                               }}/>
                                         <span>France</span>
                                     </label>
                                     <label
-                                        className={`cursor-pointer flex items-center gap-4   ${cheked2 ? "bg-[#EFF6FF] border-2 border-[#3B82F6]" : "bg-white border-1 border-gray-400"} p-[10px] rounded-xl`}>
+                                        className={`cursor-pointer flex items-center gap-4   ${checked2 ? "bg-[#EFF6FF] border-2 border-[#3B82F6]" : "bg-white border-1 border-gray-400"} p-[10px] rounded-xl`}>
                                         <input type={"checkbox"} name={'userType'} className={'w-4 h-4'}
-                                               checked={cheked2}
-                                               onChange={(e) => setCheked2(!cheked2)  && setInterestedCountries(e.target.checked)}
-                                        />
+                                               checked={checked2}
+                                               onChange={(e) => {
+                                                   setChecked2(!checked2);
+                                                   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                                   // @ts-expect-error
+                                                   setInterestedCountries(e.target.checked);
+                                               }}/>
                                         <span> United States</span>
                                     </label>
                                 </div>
-                                <h1 className={'text-[12px] text-gray-600 mt-[5px]'}>Select countries you're intersted
-                                    in
-                                    exploring </h1>
+                                <h1 className={'text-[12px] text-gray-600 mt-[5px]'}>{"Select countries you're interested in exploring"}</h1>
                                 <div className={'py-[20px]'}>
                                     <label className={'text-[18px] font-[600] mt-[10px]'}>Monthly Budget Range
                                         (USD)</label>
-                                    <select value={monthlyBudget} onChange={(e)=>setMonthlyBudget(e.target.value)} className={'w-full mt-[10px] border-1 border-gray-400 p-[20px] rounded-xl'}>
+                                    <select value={monthlyBudget} onChange={(e) => setMonthlyBudget(e.target.value)}
+                                            className={'w-full mt-[10px] border-1 border-gray-400 p-[20px] rounded-xl'}>
                                         <option>$1,000</option>
                                         <option>$1,000-$2,000</option>
                                         <option>$2,000-$3,000</option>
@@ -232,11 +268,12 @@ export default function EditPage() {
                                 </div>
                                 <div className={'py-[10px] border-b border-gray-200'}></div>
                                 <div className={'flex items-center justify-end gap-4 py-[20px]'}>
-                                    <button type="button" className={' border-1 border-gray-400 px-6 py-3 rounded-xl cursor-pointer'}>
+                                    <button type="button"
+                                            className={' border-1 border-gray-400 px-6 py-3 rounded-xl cursor-pointer'}>
                                         Cancel
                                     </button>
                                     <button
-                                        type="button"
+                                        onClick={fetchEdit}
                                         className={'flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-blue-600 to-green-600 text-white rounded-xl font-[600] cursor-pointer'}>
                                         <Check/>
                                         <h1>Save Cahnges </h1>
@@ -245,9 +282,10 @@ export default function EditPage() {
                             </div>
                         </div>
                     </div>
-                </form>
-
-            </div>
+                </div>
+            </form>
         </div>
+
+
     )
 }

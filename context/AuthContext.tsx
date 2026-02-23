@@ -20,19 +20,27 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
 
     // При загрузке проверяем, был ли пользователь залогинен (например, в localStorage)
     useEffect(() => {
-        const savedUser = localStorage.getItem('user');
-        const savedToken = localStorage.getItem('token');
+        const savedUser = localStorage.getItem("user");
+        const savedToken = localStorage.getItem("token");
+
         if (savedUser) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
-            setUser(JSON.parse(savedUser));
-            setIsLoggedIn(true);
+            try {
+                const parsedUser = JSON.parse(savedUser);
+                // eslint-disable-next-line react-hooks/set-state-in-effect
+                setUser(parsedUser);
+                setIsLoggedIn(true);
+            } catch {
+                console.error("Invalid user JSON in localStorage");
+                localStorage.removeItem("user");
+            }
         }
+
         if (savedToken) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
             setToken(savedToken);
             setIsLoggedIn(true);
         }
     }, []);
+
 
     const login = (userData: User, token: string) => {
         setIsLoggedIn(true);

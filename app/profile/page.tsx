@@ -5,6 +5,7 @@ import {useCallback, useEffect, useState} from "react";
 import {User} from "@/types";
 import Image from "next/image";
 import {Heart, SquarePen, UserRound} from "lucide-react";
+import Link from "next/link";
 
 
 export default function ProfilePage() {
@@ -52,10 +53,10 @@ export default function ProfilePage() {
                 <div className={"flex flex-col gap-3"}>
                     <h1 className={"text-[20px] font-[600]"}>{user?.name}</h1>
                     <h1 className={"text-gray-600"}>{user?.email}</h1>
-                    <button className={"text-white bg-[#2563EB] rounded-xl flex justify-center gap-4 p-[10px]"}>
+                    <Link href={'/edit'} className={"text-white bg-[#2563EB] rounded-xl flex justify-center gap-4 p-[10px]"}>
                         <SquarePen/>
                         <h1 className={'font-[600]'}>Edit Profile</h1>
-                    </button>
+                    </Link>
                 </div>
             </div>
             <div className={'flex  justify-between  gap-10'}>
@@ -79,7 +80,7 @@ export default function ProfilePage() {
                         </div>
                         <div className={"flex flex-col gap-2"}>
                             <label htmlFor="name">City</label>
-                            <div className={' border-1 border-gray-400 p-[10px] rounded-xl'}>{user?.City}</div>
+                            <div className={' border-1 border-gray-400 p-[10px] rounded-xl'}>{user?.city}</div>
                         </div>
                     </div>
                 </div>
