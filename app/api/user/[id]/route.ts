@@ -29,8 +29,12 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
     const userId = getUserId(req);
     if (!userId || userId !== id) return NextResponse.json({error: "Unauthorized"}, {status: 403});
 
-    const {name} = await req.json();
-    const user = await prisma.user.update({where: {id: userId}, data: {name}});
+    const { name, image, country, position, city, interestedCountries, monthlyBudget } = await req.json();
+    const data = Object.fromEntries(
+        Object.entries({ name, image, country, position, city, interestedCountries, monthlyBudget })
+            .filter(([, v]) => v !== undefined)
+    );
+    const user = await prisma.user.update({ where: { id: userId }, data });
     return NextResponse.json(user);
 }
 
