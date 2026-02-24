@@ -6,15 +6,19 @@ import Link from 'next/link';
 import {Mail, Lock, Globe} from 'lucide-react';
 import {Github, Google} from "@/assets";
 import {useRouter} from "next/navigation";
+import {useAuth} from "@/context/AuthContext";
 
 export default function LoginPage() {
 
     const [email, setEmail] = useState('');
+
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
     const router = useRouter();
     const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
+    const {login, token} = useAuth()
     const fetchLogin = useCallback(async () => {
         try {
             setLoading(true);
@@ -24,23 +28,28 @@ export default function LoginPage() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                mode: "no-cors",
                 body: JSON.stringify({
-                    email: email,
-                    password: password,
+                    email,
+                    password,
                 }),
             });
 
             const data = await response.json();
             console.log("SERVER RESPONSE:", data);
-            router.push("/");
+            if (!response.ok || !data?.token) {
+                setError(data?.message || "Invalid email or password");
 
+                return;
+            }
+            login(data.user, data.token);
+            router.push("/");
         } catch (error) {
             console.error("LOGIN ERROR:", error);
+            setError("Something went wrong");
         } finally {
             setLoading(false);
         }
-    }, [email, password]);
+    }, [email, password, login, router]);
 
 
     return (
@@ -87,8 +96,6 @@ export default function LoginPage() {
                         e.preventDefault();
                         fetchLogin();
                     }}>
-
-
                         <div className="space-y-1">
                             <label htmlFor="email" className="block text-sm font-medium text-gray-300 ml-1">Email
                                 Address</label>
@@ -104,12 +111,10 @@ export default function LoginPage() {
                                     onChange={(e) => setEmail(e.target.value)}
                                     className="block w-full pl-10 pr-3 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white/20 focus:bg-white/10 transition-all duration-200"
                                     placeholder="name@example.com"
-                                    required
+                                    required={true}
                                 />
                             </div>
                         </div>
-
-
                         <div className="space-y-1">
                             <div className="flex items-center justify-between ml-1">
                                 <label htmlFor="password"
@@ -130,21 +135,14 @@ export default function LoginPage() {
                                     onChange={(e) => setPassword(e.target.value)}
                                     className="block w-full pl-10 pr-3 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white/20 focus:bg-white/10 transition-all duration-200"
                                     placeholder="••••••••"
-                                    required
+                                    required={true}
                                 />
                             </div>
                         </div>
-
-
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-navy-950 text-gray-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-white transition-all duration-200 transform hover:-translate-y-0.5 mt-2"
-                        >
+                        <button type="submit" disabled={loading}
+                                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-navy-950 text-gray-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-white transition-all duration-200 transform hover:-translate-y-0.5 mt-2">
                             {loading ? "Signing in..." : "Sign In"}
                         </button>
-
-
                         <div className="relative my-6">
                             <div className="absolute inset-0 flex items-center">
                                 <div className="w-full border-t border-gray-600/50"></div>
@@ -154,6 +152,7 @@ export default function LoginPage() {
                                     className="px-2 bg-transparent text-gray-400 backdrop-blur-sm">Or continue with</span>
                             </div>
                         </div>
+
                         <div className="grid grid-cols-2 gap-3">
                             <button type="button"
                                     className="flex items-center justify-center px-4 py-2.5 border border-gray-600/50 rounded-xl bg-white/5 text-sm font-medium text-white hover:bg-white/10 transition-colors">
@@ -165,7 +164,6 @@ export default function LoginPage() {
                             </button>
                         </div>
                     </form>
-
                     <div className="mt-8 text-center">
                         <p className="text-sm text-gray-400">
                             Don&apos;t have an account?

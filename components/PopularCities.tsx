@@ -63,7 +63,7 @@ export default function PopularCities({country}: CountryProps) {
                 <div className={"flex items-center   py-[20px] gap-5 "}>
                     {cities.map((city: City) => (
                         <div key={city.id}
-                             className={"flex flex-col gap-3 max-w-[400px] w-full h-full bg-white rounded-xl shadow-sm cursor-pointer overflow-hidden border border-gray-100  "}>
+                             className={"flex flex-col gap-3 max-w-[350px] w-full h-full bg-white rounded-xl shadow-sm cursor-pointer overflow-hidden border border-gray-100  "}>
                             <div className={"relative h-48 w-full"}>
                                 <Image
                                     src={city.image}
@@ -89,7 +89,7 @@ export default function PopularCities({country}: CountryProps) {
                                         </svg>
                                         <h1 className={"text-[18px]"}>{city.rating}</h1>
                                     </div>
-                                    <h1 className={"text-gray-700"}>1,234 reviews</h1>
+                                    <h1 className={"text-gray-700"}>0 reviews</h1>
                                 </div>
                             </div>
                         </div>

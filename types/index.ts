@@ -1,3 +1,5 @@
+import {StaticImport} from "next/dist/shared/lib/get-img-props";
+
 export type Costs = {
     id: number;
     rent: number;
@@ -40,3 +42,16 @@ export type Country = {
     totalCost: number;
     cities: City[] | null;
 };
+
+export type User = {
+    id: number;
+    email: string;
+    name: string;
+    provider: string | null;
+    image: string | StaticImport;
+    created_At: string;
+    city: string;
+    country: string;
+    monthlyBudget: string;
+    interestedCountries: Array<string> | null;
+} | null;

@@ -10,15 +10,32 @@ import {useRouter} from "next/navigation";
 
 export default function SignUpPage() {
     const [fullName, setFullName] = useState('');
+    const [error, setError] = useState("");
+    // const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const router = useRouter();
     const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
+
     const fetchUp = useCallback(async () => {
+        if (!fullName) {
+            setError("Full Name is required / To‘liq ismingizni kiriting");
+            return;
+        }
+        if (!email) {
+            setError("Email is required / Email kiriting");
+            return;
+        }
+        if (!password) {
+            setError("Password is required / Parol kiriting");
+            return;
+        }
+
+        setError("");
         try {
             setLoading(true);
-
             const response = await fetch(`${BASE_URL}/api/user/signup`, {
                 method: "POST",
                 headers: {
@@ -42,7 +59,7 @@ export default function SignUpPage() {
         } finally {
             setLoading(false);
         }
-    }, [email, password]);
+    }, [email, password ,fullName]);
     return (
         <div
             className="relative min-h-screen w-full font-sans text-white antialiased flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -86,10 +103,17 @@ export default function SignUpPage() {
                                     </div>
                                     <input
                                         onChange={(e) => setFullName(e.target.value)}
-                                        type="text"
+                                        type={password ?"text":"password"}
+                                        required={true}
                                         placeholder="Full Name"
                                         className="block w-full pl-11 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/30 focus:bg-white/10 transition-all duration-200 sm:text-sm"
                                     />
+                                    <button type={'button'}
+                                      onClick={()=>setPassword((!password))}
+                                    className={""}
+                                    >
+                                        {password ? "hide":"show"}
+                                    </button>
                                 </div>
 
                                 {/* Email */}
@@ -102,6 +126,7 @@ export default function SignUpPage() {
                                     <input
                                         onChange={(e) => setEmail(e.target.value)}
                                         type="email"
+                                        required={true}
                                         placeholder="Email address"
                                         className="block w-full pl-11 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/30 focus:bg-white/10 transition-all duration-200 sm:text-sm"
                                     />
@@ -116,6 +141,7 @@ export default function SignUpPage() {
                                         <input
                                             onChange={(e) => setPassword(e.target.value)}
                                             type="password"
+                                            required={true}
                                             placeholder="Password"
                                             className="block w-full pl-11 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/30 focus:bg-white/10 transition-all duration-200 sm:text-sm"
                                         />
@@ -129,6 +155,7 @@ export default function SignUpPage() {
                                         <input
                                             onChange={(e) => setPassword(e.target.value)}
                                             type="password"
+                                            required={true}
                                             placeholder="Confirm"
                                             className="block w-full pl-11 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/30 focus:bg-white/10 transition-all duration-200 sm:text-sm"
                                         />
@@ -140,6 +167,7 @@ export default function SignUpPage() {
                                     <input
                                         id="terms"
                                         type="checkbox"
+                                        required={true}
                                         className="h-4 w-4 rounded border-white/20 bg-white/5 text-indigo-500 focus:ring-offset-0 focus:ring-indigo-500/50"
                                     />
                                     <label htmlFor="terms" className="ml-2 block text-sm text-slate-300">

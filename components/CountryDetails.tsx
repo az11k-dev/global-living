@@ -2,6 +2,7 @@ import {Country} from "@/types";
 import {CloudSunRain, ShieldHalf, Globe, MapPinned} from "lucide-react";
 import Image from "next/image";
 import React from "react";
+import {Shield} from "@/assets";
 
 
 type CountryProps = {
@@ -13,7 +14,7 @@ export default function CountryDetails({country}: CountryProps) {
     const data = [
         {
             id: 1,
-            icon: <ShieldHalf color={"green"}/>,
+            icon: <Shield/>,
             number: country?.rating,
             title: "Safety",
             bg: "#dcfce7",
@@ -37,11 +38,11 @@ export default function CountryDetails({country}: CountryProps) {
         },
         {
             id: 4,
-            icon: <MapPinned size={28} color={"orange"}/>  ,
+            icon: <MapPinned size={28} color={"#EA580C"}/>  ,
             number: country?.continent,
             title: "Continent",
             bg: "#ffedd4",
-            color: "orange"
+            color: "#EA580C"
         },
 
     ]
